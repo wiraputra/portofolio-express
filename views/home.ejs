@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Utama -->
+    <title><%= data.info.nama %> - Portofolio</title>
+    <meta name="description" content="<%= data.info.deskripsi %>">
+    <meta name="keywords" content="Portfolio, Backend Developer, Express.js, Web Developer">
+    <meta name="author" content="<%= data.info.nama %>">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nama-project-kamu.vercel.app/">
+    <meta property="og:title" content="Portofolio <%= data.info.nama %>">
+    <meta property="og:description" content="<%= data.info.deskripsi %>">
+    <meta property="og:image" content="https://nama-project-kamu.vercel.app/images/profile.jpg">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome (Icon) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/style.css">
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.png" type="image/png">
+</head>
+<body>
+
+    <!-- Background Decoration -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="container">
+        
+        <!-- HERO SECTION -->
+        <header class="hero">
+            <div class="profile-container" data-aos="zoom-in">
+                <!-- Fallback jika foto belum ada, pakai placeholder -->
+                <img src="<%= data.info.foto %>" alt="Foto Profil" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'">
+            </div>
+            
+            <div class="hero-text" data-aos="fade-up">
+                <h1>Hi, Saya <span class="gradient-text"><%= data.info.nama %></span></h1>
+                <!-- Tempat Typing Effect -->
+                <h2 id="typing-text"></h2>
+                <p><%= data.info.deskripsi %></p>
+                
+                <div class="social-buttons">
+                    <a href="https://github.com/wiraputra" class="btn btn-primary"><i class="fab fa-github"></i> GitHub</a>
+                    <a href="https://www.linkedin.com/in/i-gede-wirawan-849651172/" class="btn btn-secondary"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+
+            <div class="hero-btns" style="margin-top: 20px;">
+                <!-- Tombol Email -->
+                <a href="mailto:wirawanw62@gmail.com" class="btn btn-primary">
+                    <i class="fas fa-envelope"></i> Hubungi Saya
+                </a>
+                <!-- Tombol Download CV -->
+                <a href="/cv.pdf" download class="btn btn-secondary">
+                    <i class="fas fa-download"></i> Download CV
+                </a>
+            </div>
+        </header>
+
+        <!-- SKILLS SECTION -->
+        <section class="skills" data-aos="fade-up">
+            <h2 class="section-title">Tech Stack</h2>
+            <div class="skills-grid">
+                <% data.skills.forEach(skill => { %>
+                    <!-- Kita beri border bawah sesuai warna skill -->
+                    <div class="skill-card" style="border-bottom: 3px solid <%= skill.color %>">
+                        <!-- Panggil Icon FontAwesome & Warnai Iconnya -->
+                        <i class="<%= skill.icon %>" style="color: <%= skill.color %>"></i>
+                        <span class="skill-name"><%= skill.nama %></span>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+
+        <!-- RESUME SECTION -->
+        <section class="resume" data-aos="fade-up">
+            <h2 class="section-title">My Resume 📄</h2>
+            
+            <div class="resume-grid">
+                <!-- Kolom Experience -->
+                <div class="resume-column">
+                    <h3 class="resume-heading"><i class="fas fa-briefcase"></i> Experience</h3>
+                    <div class="timeline">
+                        <% data.resume.experience.forEach(item => { %>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4><%= item.title %></h4>
+                                <span class="place"><%= item.place %></span>
+                                <span class="date"><%= item.date %></span>
+                                <p><%= item.desc %></p>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+
+                <!-- Kolom Education -->
+                <div class="resume-column">
+                    <h3 class="resume-heading"><i class="fas fa-graduation-cap"></i> Education</h3>
+                    <div class="timeline">
+                        <% data.resume.education.forEach(item => { %>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4><%= item.title %></h4>
+                                <span class="place"><%= item.place %></span>
+                                <span class="date"><%= item.date %></span>
+                                <p><%= item.desc %></p>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CERTIFICATIONS SECTION -->
+        <section class="certifications" data-aos="fade-up">
+            <h2 class="section-title">My Certifications 🏆</h2>
+            
+            <div class="cert-grid">
+                <% data.certificates.forEach(cert => { %>
+                    <div class="cert-card">
+                        <!-- Tambahkan onclick pada pembungkus gambar -->
+                        <div class="cert-img-wrapper" onclick="openModal('<%= cert.img %>')">
+                            <img src="<%= cert.img %>" alt="<%= cert.title %>" onerror="this.src='https://via.placeholder.com/400x250?text=No+Image'">
+                        </div>
+                        <div class="cert-content">
+                            <h3><%= cert.title %></h3>
+                            <small><%= cert.issuer %></small>
+                            <p><%= cert.desc %></p>
+                            <!-- Ubah link menjadi tombol pemicu modal -->
+                            <button class="cert-link-btn" onclick="openModal('<%= cert.img %>')">
+                                View Certificate <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+
+        <!-- PROJECTS SECTION -->
+        <section class="projects" data-aos="fade-up">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <% data.projects.forEach(project => { %>
+                    <div class="project-card">
+                        <h3><%= project.judul %></h3>
+                        <p><%= project.deskripsi %></p>
+                        <div class="tags">
+                            <% project.tags.forEach(tag => { %>
+                                <span class="tag"><%= tag %></span>
+                            <% }); %>
+                        </div>
+                        <a href="<%= project.link %>" class="project-link">Lihat Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+
+        <footer>
+            <p>Built with ❤️ using Express.js & Vercel</p>
+            <p>&copy; 2026 I Gede Wirawan. All rights reserved.</p>
+        </footer>
+
+    </div>
+
+    <!-- Script Data untuk JS -->
+    <script>
+        const roles = <%- JSON.stringify(data.info.role) %>;
+    </script>
+    
+    <!-- MODAL POPUP (Tersembunyi Awalnya) -->
+    <div id="certModal" class="modal" onclick="closeModal()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div id="caption"></div>
+    </div>
+
+    <!-- Script Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/script.js"></script>
+</body>
+</html>
