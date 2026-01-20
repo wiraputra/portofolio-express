@@ -57,7 +57,7 @@ const dataPortfolio = {
             {
                 title: "Audio Video Engineering (Electronics)",
                 place: "State Vocational High School 1 Denpasar",
-                date: "2021 - 2024",
+                date: "2018 - 2021",
                 desc: "basics of electronics, installation, operation, maintenance, and repair of sound (audio) and image (video) systems and understanding of supporting hardware and software."
             }
         ]
