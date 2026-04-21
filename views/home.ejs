@@ -4,76 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- SEO Utama -->
-    <title><%= data.info.nama %> - Portofolio</title>
+    <title><%= data.info.nama %> | Fullstack Developer Portfolio</title>
     <meta name="description" content="<%= data.info.deskripsi %>">
-    <meta name="keywords" content="Portfolio, Backend Developer, Express.js, Web Developer">
+    <meta name="keywords" content="Portfolio, Backend Developer, Express.js, Web Developer, Modern Portfolio">
     <meta name="author" content="<%= data.info.nama %>">
 
-    <!-- Open Graph / Facebook / WhatsApp -->
+    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nama-project-kamu.vercel.app/">
     <meta property="og:title" content="Portofolio <%= data.info.nama %>">
     <meta property="og:description" content="<%= data.info.deskripsi %>">
-    <meta property="og:image" content="https://nama-project-kamu.vercel.app/images/profile.jpg">
+    <meta property="og:image" content="/images/hero-bg.png">
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome (Icon) -->
+    <!-- Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/style.css">
-    <!-- Favicon -->
     <link rel="icon" href="/favicon.png" type="image/png">
 </head>
 <body>
 
-    <!-- Background Decoration -->
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
+    <!-- NAVIGATION -->
+    <nav id="main-nav">
+        <div class="nav-container">
+            <div class="logo">WIRAWAN.</div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#skills">Skills</a>
+                <a href="#resume">Resume</a>
+                <a href="#projects">Projects</a>
+                <a href="#certifications">Certificates</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- LANDING PAGE / HERO -->
+    <header class="hero" id="home">
+        <div class="hero-content">
+            <div class="reveal">
+                <div class="status-badge">
+                    <div class="pulse-dot"></div>
+                    Available for Projects
+                </div>
+            </div>
+            
+            <div class="reveal">
+                <img src="<%= data.info.foto %>" alt="Foto Profil" class="profile-img" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'">
+            </div>
+            
+            <h1 class="reveal">Hi, I'm <span class="gradient-text"><%= data.info.nama %></span></h1>
+            <h2 id="typing-text" class="reveal"></h2>
+            
+            <p class="reveal" style="max-width: 600px; margin: 0 auto 30px; color: var(--text-gray);">
+                <%= data.info.deskripsi %>
+            </p>
+            
+            <div class="hero-btns reveal">
+                <a href="mailto:wirawanw62@gmail.com" class="btn btn-glow">
+                    <i class="fas fa-paper-plane"></i> Contact Me
+                </a>
+                <a href="/cv.pdf" download="CV_I_Gede_Wirawan.pdf" target="_blank" class="btn btn-outline" rel="noopener noreferrer">
+                    <i class="fas fa-file-download"></i> Download CV
+                </a>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator" data-target="skills">
+            <i class="fas fa-chevron-down fa-2x"></i>
+        </div>
+    </header>
 
     <div class="container">
         
-        <!-- HERO SECTION -->
-        <header class="hero">
-            <div class="profile-container" data-aos="zoom-in">
-                <!-- Fallback jika foto belum ada, pakai placeholder -->
-                <img src="<%= data.info.foto %>" alt="Foto Profil" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'">
-            </div>
-            
-            <div class="hero-text" data-aos="fade-up">
-                <h1>Hi, Saya <span class="gradient-text"><%= data.info.nama %></span></h1>
-                <!-- Tempat Typing Effect -->
-                <h2 id="typing-text"></h2>
-                <p><%= data.info.deskripsi %></p>
-                
-                <div class="social-buttons">
-                    <a href="https://github.com/wiraputra" class="btn btn-primary"><i class="fab fa-github"></i> GitHub</a>
-                    <a href="https://www.linkedin.com/in/i-gede-wirawan-849651172/" class="btn btn-secondary"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                </div>
-            </div>
-
-            <div class="hero-btns" style="margin-top: 20px;">
-                <!-- Tombol Email -->
-                <a href="mailto:wirawanw62@gmail.com" class="btn btn-primary">
-                    <i class="fas fa-envelope"></i> Hubungi Saya
-                </a>
-                <!-- Tombol Download CV -->
-                <a href="/cv.pdf" download class="btn btn-secondary">
-                    <i class="fas fa-download"></i> Download CV
-                </a>
-            </div>
-        </header>
-
         <!-- SKILLS SECTION -->
-        <section class="skills" data-aos="fade-up">
-            <h2 class="section-title">Tech Stack</h2>
-            <div class="skills-grid">
+        <section id="skills" class="reveal">
+            <div class="section-header">
+                <h2 class="reveal">Tech Stack</h2>
+                <p class="reveal">Tools and technologies I use to build digital solutions.</p>
+            </div>
+            <div class="skills-grid reveal-container">
                 <% data.skills.forEach(skill => { %>
-                    <!-- Kita beri border bawah sesuai warna skill -->
-                    <div class="skill-card" style="border-bottom: 3px solid <%= skill.color %>">
-                        <!-- Panggil Icon FontAwesome & Warnai Iconnya -->
+                    <div class="skill-card reveal" style="border-bottom: 2px solid <%= skill.color %>">
                         <i class="<%= skill.icon %>" style="color: <%= skill.color %>"></i>
                         <span class="skill-name"><%= skill.nama %></span>
                     </div>
@@ -82,20 +94,22 @@
         </section>
 
         <!-- RESUME SECTION -->
-        <section class="resume" data-aos="fade-up">
-            <h2 class="section-title">My Resume 📄</h2>
+        <section id="resume">
+            <div class="section-header reveal">
+                <h2>Resume</h2>
+                <p>My professional and educational journey.</p>
+            </div>
             
             <div class="resume-grid">
                 <!-- Kolom Experience -->
-                <div class="resume-column">
-                    <h3 class="resume-heading"><i class="fas fa-briefcase"></i> Experience</h3>
-                    <div class="timeline">
+                <div class="resume-col">
+                    <h3 class="reveal reveal-left"><i class="fas fa-briefcase"></i> Experience</h3>
+                    <div class="timeline reveal-container">
                         <% data.resume.experience.forEach(item => { %>
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
+                            <div class="timeline-item reveal reveal-left">
+                                <span class="timeline-date"><%= item.date %></span>
                                 <h4><%= item.title %></h4>
-                                <span class="place"><%= item.place %></span>
-                                <span class="date"><%= item.date %></span>
+                                <span class="timeline-place"><%= item.place %></span>
                                 <p><%= item.desc %></p>
                             </div>
                         <% }); %>
@@ -103,15 +117,14 @@
                 </div>
 
                 <!-- Kolom Education -->
-                <div class="resume-column">
-                    <h3 class="resume-heading"><i class="fas fa-graduation-cap"></i> Education</h3>
-                    <div class="timeline">
+                <div class="resume-col">
+                    <h3 class="reveal reveal-right"><i class="fas fa-graduation-cap"></i> Education</h3>
+                    <div class="timeline reveal-container">
                         <% data.resume.education.forEach(item => { %>
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
+                            <div class="timeline-item reveal reveal-right">
+                                <span class="timeline-date"><%= item.date %></span>
                                 <h4><%= item.title %></h4>
-                                <span class="place"><%= item.place %></span>
-                                <span class="date"><%= item.date %></span>
+                                <span class="timeline-place"><%= item.place %></span>
                                 <p><%= item.desc %></p>
                             </div>
                         <% }); %>
@@ -120,37 +133,15 @@
             </div>
         </section>
 
-        <!-- CERTIFICATIONS SECTION -->
-        <section class="certifications" data-aos="fade-up">
-            <h2 class="section-title">My Certifications 🏆</h2>
-            
-            <div class="cert-grid">
-                <% data.certificates.forEach(cert => { %>
-                    <div class="cert-card">
-                        <!-- Tambahkan onclick pada pembungkus gambar -->
-                        <div class="cert-img-wrapper" onclick="openModal('<%= cert.img %>')">
-                            <img src="<%= cert.img %>" alt="<%= cert.title %>" onerror="this.src='https://via.placeholder.com/400x250?text=No+Image'">
-                        </div>
-                        <div class="cert-content">
-                            <h3><%= cert.title %></h3>
-                            <small><%= cert.issuer %></small>
-                            <p><%= cert.desc %></p>
-                            <!-- Ubah link menjadi tombol pemicu modal -->
-                            <button class="cert-link-btn" onclick="openModal('<%= cert.img %>')">
-                                View Certificate <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                <% }); %>
-            </div>
-        </section>
-
         <!-- PROJECTS SECTION -->
-        <section class="projects" data-aos="fade-up">
-            <h2 class="section-title">Featured Projects</h2>
-            <div class="projects-grid">
+        <section id="projects">
+            <div class="section-header reveal">
+                <h2>Featured Projects</h2>
+                <p>Some of the best works I have built.</p>
+            </div>
+            <div class="projects-grid reveal-container">
                 <% data.projects.forEach(project => { %>
-                    <div class="project-card">
+                    <div class="project-card reveal">
                         <h3><%= project.judul %></h3>
                         <p><%= project.deskripsi %></p>
                         <div class="tags">
@@ -158,33 +149,66 @@
                                 <span class="tag"><%= tag %></span>
                             <% }); %>
                         </div>
-                        <a href="<%= project.link %>" class="project-link">Lihat Project <i class="fas fa-arrow-right"></i></a>
+                        <a href="<%= project.link %>" class="project-link">
+                            View Detail <i class="fas fa-external-link-alt"></i>
+                        </a>
                     </div>
                 <% }); %>
             </div>
         </section>
 
-        <footer>
-            <p>Built with ❤️ using Express.js & Vercel</p>
+        <!-- CERTIFICATIONS SECTION -->
+        <section id="certifications">
+            <div class="section-header reveal">
+                <h2>Certifications</h2>
+                <p>Proof of my competence and dedication to learning.</p>
+            </div>
+            
+            <div class="cert-grid reveal-container">
+                <% data.certificates.forEach(cert => { %>
+                    <div class="cert-card reveal">
+                        <div class="cert-img-container" data-img="<%= cert.img %>" onclick="openModal(this.getAttribute('data-img'))">
+                            <img src="<%= cert.img %>" alt="<%= cert.title %>" onerror="this.src='https://via.placeholder.com/400x250?text=No+Image'">
+                            <div class="cert-overlay">
+                                <i class="fas fa-search-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <div class="cert-info">
+                            <h3><%= cert.title %></h3>
+                            <span class="cert-issuer"><%= cert.issuer %></span>
+                            <p><%= cert.desc %></p>
+                            <button class="project-link" style="background:none; border:none; cursor:pointer;" data-img="<%= cert.img %>" onclick="openModal(this.getAttribute('data-img'))">
+                                Quick View <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="container footer-content reveal">
+            <p>Designed for a premium digital experience.</p>
             <p>&copy; 2026 I Gede Wirawan. All rights reserved.</p>
-        </footer>
+            <div class="social-links" style="margin-top: 20px; display: flex; gap: 20px; justify-content: center;">
+                <a href="https://github.com/wiraputra" style="color: var(--text-muted); font-size: 1.5rem;"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/i-gede-wirawan-849651172/" style="color: var(--text-muted); font-size: 1.5rem;"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
 
-    </div>
-
-    <!-- Script Data untuk JS -->
-    <script>
-        const roles = <%- JSON.stringify(data.info.role) %>;
-    </script>
+    <!-- Script Data via Dataset untuk mencegah IDE/Linter bugs -->
+    <div id="portfolio-data" data-roles="<%= JSON.stringify(data.info.role) %>" style="display: none;"></div>
     
-    <!-- MODAL POPUP (Tersembunyi Awalnya) -->
-    <div id="certModal" class="modal" onclick="closeModal()">
-        <span class="close-modal">&times;</span>
-        <img class="modal-content" id="modalImage">
-        <div id="caption"></div>
+    <!-- MODAL -->
+    <div id="certModal" class="modal" onclick="closeModal()" style="display:none; position:fixed; z-index:2000; top:0; left:0; width:100%; height:100%; align-items:center; justify-content:center;">
+        <span style="position:fixed; top:20px; right:40px; font-size:40px; cursor:pointer;">&times;</span>
+        <img id="modalImage" class="modal-content" style="max-width:90%; max-height:90%;">
     </div>
 
-    <!-- Script Library -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Script JS -->
     <script src="/script.js"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ const dataPortfolio = {
     info: {
         nama: "I Gede Wirawan", 
         role: ["Frontend Developer", "Cyber Security Enthusiast", "Tech Explorer"],
-        deskripsi: "Saya membangun aplikasi web yang cepat, aman, dan scalable.",
+        deskripsi: "I build fast, secure, and scalable web applications.",
         foto: "/images/profile.jpeg" 
     },
     skills: [
@@ -41,9 +41,15 @@ const dataPortfolio = {
     resume: {
         experience: [
             {
+                title: "Full Stack Developer (Magang Berdampak)",
+                place: "Interlace Studies Bali",
+                date: "2026 - Present",
+                desc: "Developing the 'Genuine Solution' platform, an application that connects employers and job seekers, featuring an admin panel to mediate and facilitate the process between both parties."
+            },
+            {
                 title: "Frontend Developer",
                 place: "Interlace Studies Bali",
-                date: "2025 - Present",
+                date: "2025 - 2026",
                 desc: "Building fast interfaces for web applications using React."
             }
         ],
@@ -95,32 +101,32 @@ const dataPortfolio = {
     ],
     projects: [
         { 
-            judul: "Aplikasi Informasi Kampus", 
-            deskripsi: "Aplikasi Informasi Kampus PNB.", 
+            judul: "Campus Information Application", 
+            deskripsi: "A mobile application providing information for the PNB Campus.", 
             tags: ["Dart", "Flutter", "Mobile"],
             link: "https://github.com/wiraputra/aplikasi_informasi_kampus" // Ganti dengan link asli
         },
         { 
             judul: "Kenangan Senja", 
-            deskripsi: "Aplikasi pengelolaan Coffeeshop berbasis Website.", 
+            deskripsi: "A web-based management application for a Coffeeshop.", 
             tags: ["Blade", "Laravel", "PHP"],
             link: "https://github.com/wiraputra/kenangansenja" 
         },
         { 
             judul: "Travel Mind", 
-            deskripsi: "Website Penyusunan Itinerary Berdasarkan Preferensi Wisatawan.", 
+            deskripsi: "An itinerary planning website based on tourist preferences.", 
             tags: ["Vue.js", "JavaScript"],
             link: "https://github.com/wiraputra/travel-mind" 
         },
         { 
             judul: "TeknoSolusi", 
-            deskripsi: "Website Company Profile 'TeknoSolusi Digital'.", 
+            deskripsi: "'TeknoSolusi Digital' Company Profile Website.", 
             tags: ["PHP", "Web Development"],
             link: "https://github.com/wiraputra/teknosolusi" 
         },
         { 
             judul: "IBM Granite", 
-            deskripsi: "Membuat Project Sederhana menggunakan IBM Granite.", 
+            deskripsi: "Experimenting and developing AI projects utilizing IBM Granite.", 
             tags: ["Jupyter Notebook", "AI", "Python"],
             link: "https://github.com/wiraputra/IBM_Granite" 
         }

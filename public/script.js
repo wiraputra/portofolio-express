@@ -1,17 +1,63 @@
-// Inisialisasi Library Animasi (AOS)
-AOS.init({
-    duration: 1000, // Durasi animasi 1 detik
-    once: true,     // Animasi hanya berjalan sekali saat scroll
+// ADVANCED REVEAL ANIMATION ON SCROLL
+const revealElements = document.querySelectorAll('.reveal');
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Check if it's a container designed for staggered children
+            if (entry.target.classList.contains('reveal-container')) {
+                const children = entry.target.querySelectorAll('.reveal');
+                children.forEach((child, index) => {
+                    setTimeout(() => {
+                        child.classList.add('active');
+                    }, index * 100); // 100ms delay between each item
+                });
+                entry.target.classList.add('active');
+            } else {
+                entry.target.classList.add('active');
+            }
+            // Once revealed, we can stop observing this specific element if desired
+            // revealObserver.unobserve(entry.target); 
+        }
+    });
+}, {
+    threshold: 0.1, // Trigger earlier for better feel
+    rootMargin: '0px 0px -50px 0px' // Slightly before it hits the viewport
 });
 
-// Efek Mengetik (Typing Effect)
+// Observe both individual reveals and reveal containers
+document.querySelectorAll('.reveal, .reveal-container').forEach(el => revealObserver.observe(el));
+
+// STICKY NAVBAR LOGIC
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        nav.classList.add('sticky');
+    } else {
+        nav.classList.remove('sticky');
+    }
+});
+
+// TYPING EFFECT
 const typingElement = document.getElementById('typing-text');
-// Variabel 'roles' diambil dari EJS di file home.ejs
+const portfolioDataEl = document.getElementById('portfolio-data');
+let roles = [];
+
+if (portfolioDataEl) {
+    try {
+        roles = JSON.parse(portfolioDataEl.getAttribute('data-roles'));
+    } catch(e) {
+        console.error("Failed to parse roles");
+    }
+}
+
 let roleIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
 
 function typeEffect() {
+    if (!typingElement || roles.length === 0) return;
+    
     const currentRole = roles[roleIndex];
     
     if (isDeleting) {
@@ -22,10 +68,10 @@ function typeEffect() {
         charIndex++;
     }
 
-    let typeSpeed = isDeleting ? 50 : 100;
+    let typeSpeed = isDeleting ? 40 : 80;
 
     if (!isDeleting && charIndex === currentRole.length) {
-        typeSpeed = 2000; // Tunggu 2 detik setelah selesai mengetik
+        typeSpeed = 2500; // Hold for 2.5s
         isDeleting = true;
     } else if (isDeleting && charIndex === 0) {
         isDeleting = false;
@@ -36,30 +82,47 @@ function typeEffect() {
     setTimeout(typeEffect, typeSpeed);
 }
 
-// Mulai efek mengetik setelah halaman dimuat
-document.addEventListener('DOMContentLoaded', typeEffect);
-
-// --- LOGIKA MODAL IMAGE ---
-
+// MODAL LOGIC
 const modal = document.getElementById("certModal");
 const modalImg = document.getElementById("modalImage");
 
-// Fungsi Buka Modal
 function openModal(imageSrc) {
-    modal.style.display = "flex"; // Gunakan flex agar rata tengah
-    modal.style.alignItems = "center"; // Vertikal tengah
-    modal.style.justifyContent = "center"; // Horizontal tengah
-    modalImg.src = imageSrc; // Isi gambar modal dengan URL dari parameter
+    if (!modal || !modalImg) return;
+    modal.style.display = "flex";
+    modalImg.src = imageSrc;
+    document.body.style.overflow = "hidden";
 }
 
-// Fungsi Tutup Modal
 function closeModal() {
+    if (!modal) return;
     modal.style.display = "none";
+    document.body.style.overflow = "auto";
 }
 
-// Opsional: Tutup modal jika tombol ESC ditekan
-document.addEventListener('keydown', function(event) {
-    if (event.key === "Escape") {
-        closeModal();
-    }
+// Close modal on ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") closeModal();
+});
+
+// INITIALIZE
+document.addEventListener('DOMContentLoaded', () => {
+    typeEffect();
+    
+    // Smooth scroll for nav links
+    document.querySelectorAll('nav a, .scroll-indicator').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            // Support both data-target and href for simplicity
+            const targetId = href ? href.substring(1) : this.getAttribute('data-target');
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
 });
