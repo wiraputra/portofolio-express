@@ -177,9 +177,16 @@
                             <h3><%= cert.title %></h3>
                             <span class="cert-issuer"><%= cert.issuer %></span>
                             <p><%= cert.desc %></p>
-                            <button class="project-link" style="background:none; border:none; cursor:pointer;" data-img="<%= cert.img %>" onclick="openModal(this.getAttribute('data-img'))">
-                                Quick View <i class="fas fa-eye"></i>
-                            </button>
+                            <div style="display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap;">
+                                <button class="project-link" style="background:none; border:none; cursor:pointer; padding: 0;" data-img="<%= cert.img %>" onclick="openModal(this.getAttribute('data-img'))">
+                                    Quick View <i class="fas fa-eye"></i>
+                                </button>
+                                <% if (cert.link) { %>
+                                    <a href="<%= cert.link %>" target="_blank" rel="noopener noreferrer" class="project-link">
+                                        Verify <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                <% } %>
+                            </div>
                         </div>
                     </div>
                 <% }); %>

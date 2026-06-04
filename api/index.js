@@ -71,6 +71,13 @@ const dataPortfolio = {
     // TAMBAHKAN DATA SERTIFIKAT DI SINI:
     certificates: [
         {
+            title: "MiniCredential Information System Security",
+            issuer: "Sawah Cyber Security",
+            img: "/images/cert5.jpg",
+            desc: "Participated in comprehensive presentation sessions and hands-on Capture The Flag (CTF) practical exercises in information system security.",
+            link: "https://academy.sawahcyber.id/credentials/scs-cop-mciss-0210-2026-kaxhur"
+        },
+        {
             title: "Masterclass Ethical Hacking",
             issuer: "Sawah Cyber Security",
             img: "/images/cert1.jpg", 
