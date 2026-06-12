@@ -85,8 +85,8 @@
             </div>
             <div class="skills-grid reveal-container">
                 <% data.skills.forEach(skill => { %>
-                    <div class="skill-card reveal" style="border-bottom: 2px solid <%= skill.color %>">
-                        <i class="<%= skill.icon %>" style="color: <%= skill.color %>"></i>
+                    <div class="skill-card reveal" <%- `style="border-bottom: 2px solid ${skill.color}"` %>>
+                        <i class="<%= skill.icon %>" <%- `style="color: ${skill.color}"` %>></i>
                         <span class="skill-name"><%= skill.nama %></span>
                     </div>
                 <% }); %>

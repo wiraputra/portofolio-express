@@ -71,6 +71,13 @@ const dataPortfolio = {
     // TAMBAHKAN DATA SERTIFIKAT DI SINI:
     certificates: [
         {
+            title: "Minicredentials Information System Security",
+            issuer: "Sawah Cyber Security",
+            img: "/images/cert6.jpg",
+            desc: "Has demonstrated fundamental competency in ethical hacking principles by applying the Cyber Kill Chain framework, identifying OWASP Top 10 vulnerabilities, and utilizing industry standard penetration testing tools during a hands-on penetration testing project.",
+            link: "https://academy.sawahcyber.id/credentials/scs-coc-mciss-0210-2026-kb24vr"
+        },
+        {
             title: "MiniCredential Information System Security",
             issuer: "Sawah Cyber Security",
             img: "/images/cert5.jpg",
