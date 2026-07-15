@@ -28,6 +28,8 @@ const dataPortfolio = {
         { nama: "Bootstrap", icon: "fab fa-bootstrap", color: "#7952B3" },
 
         // --- Baris 2 ---
+        { nama: "React", icon: "fab fa-react", color: "#61DAFB" },
+        { nama: "TypeScript", icon: "fas fa-code", color: "#3178C6" },
         { nama: "Figma", icon: "fab fa-figma", color: "#F24E1E" },
         { nama: "Anaconda", icon: "fas fa-circle-nodes", color: "#44A833" }, // Ikon alternatif (Nodes)
         { nama: "Android Studio", icon: "fab fa-android", color: "#3DDC84" },
@@ -114,6 +116,15 @@ const dataPortfolio = {
         }
     ],
     projects: [
+        { 
+            judul: "Genuine Solutions", 
+            deskripsi: "An internal recruitment and job-matching platform connecting employers and job seekers with an admin mediation panel.", 
+            tags: ["Laravel", "Inertia.js", "React", "TypeScript"],
+            logo: `<div class="project-logo-brand" style="font-size: 1.5rem; font-weight: 700; font-family: 'Outfit', sans-serif; margin-bottom: 15px; letter-spacing: -0.03em;"><span style="color: #5F5CE5;">Genuine</span> <span style="color: #E5E7EB;">Solutions</span></div>`,
+            detailDesc: "Genuine Solutions is a modern full-stack recruitment management and Applicant Tracking System (ATS) platform designed to streamline the hiring process for agencies, employers, and job seekers. The system optimizes the recruitment pipeline through an automated skill-based matchmaking engine, bulk lead processing, and AI-driven candidate onboarding.",
+            detailImg: "/images/genuine-solutions.png",
+            link: "https://github.com/wiraputra" // Default link, can be changed later
+        },
         { 
             judul: "Campus Information Application", 
             deskripsi: "A mobile application providing information for the PNB Campus.", 
