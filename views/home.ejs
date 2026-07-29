@@ -259,7 +259,7 @@
                     <% const skillsRow1 = data.skills.slice(0, Math.ceil(data.skills.length / 2)); %>
                     <% [...skillsRow1, ...skillsRow1].forEach(skill => { %>
                         <div class="marquee-item">
-                            <i class="<%= skill.icon %>" style="color: <%= skill.color %>; font-size: 1.4rem;"></i>
+                            <i class="<%= skill.icon %>" <%- `style="color: ${skill.color}; font-size: 1.4rem;"` %>></i>
                             <span><%= skill.nama %></span>
                         </div>
                     <% }); %>
@@ -272,7 +272,7 @@
                     <% const skillsRow2 = data.skills.slice(Math.ceil(data.skills.length / 2)); %>
                     <% [...skillsRow2, ...skillsRow2].forEach(skill => { %>
                         <div class="marquee-item">
-                            <i class="<%= skill.icon %>" style="color: <%= skill.color %>; font-size: 1.4rem;"></i>
+                            <i class="<%= skill.icon %>" <%- `style="color: ${skill.color}; font-size: 1.4rem;"` %>></i>
                             <span><%= skill.nama %></span>
                         </div>
                     <% }); %>
