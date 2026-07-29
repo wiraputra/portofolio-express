@@ -73,6 +73,13 @@ const dataPortfolio = {
     // TAMBAHKAN DATA SERTIFIKAT DI SINI:
     certificates: [
         {
+            title: "Magang Berdampak MBKM — Interlace Studies",
+            issuer: "PT. Jalinan Studi Internusa",
+            img: "/images/cert7.png",
+            desc: "Telah berhasil menyelesaikan Program Merdeka Belajar Kampus Merdeka (MBKM) di Interlace Studies Bali yang dikelola oleh PT. Jalinan Studi Internusa, berlangsung pada 5 Maret – 31 Juli 2026. Nomor: 07/MBKM/JSI/VII/2026.",
+            link: "#"
+        },
+        {
             title: "Minicredentials Information System Security",
             issuer: "Sawah Cyber Security",
             img: "/images/cert6.jpg",
@@ -120,10 +127,16 @@ const dataPortfolio = {
             judul: "Genuine Solutions", 
             deskripsi: "An internal recruitment and job-matching platform connecting employers and job seekers with an admin mediation panel.", 
             tags: ["Laravel", "Inertia.js", "React", "TypeScript"],
-            logo: `<div class="project-logo-brand" style="font-size: 1.5rem; font-weight: 700; font-family: 'Outfit', sans-serif; margin-bottom: 15px; letter-spacing: -0.03em;"><span style="color: #5F5CE5;">Genuine</span> <span style="color: #E5E7EB;">Solutions</span></div>`,
+            logo: `<div class="project-logo-brand">
+                     <div class="gs-logo-icon"><span>GS</span></div>
+                     <div class="gs-logo-text">
+                       <span class="gs-logo-primary">Genuine</span>
+                       <span class="gs-logo-secondary">SOLUTIONS</span>
+                     </div>
+                   </div>`,
             detailDesc: "Genuine Solutions is a modern full-stack recruitment management and Applicant Tracking System (ATS) platform designed to streamline the hiring process for agencies, employers, and job seekers. The system optimizes the recruitment pipeline through an automated skill-based matchmaking engine, bulk lead processing, and AI-driven candidate onboarding.",
             detailImg: "/images/genuine-solutions.png",
-            link: "https://github.com/wiraputra" // Default link, can be changed later
+            link: "https://github.com/wiraputra"
         },
         { 
             judul: "Campus Information Application", 

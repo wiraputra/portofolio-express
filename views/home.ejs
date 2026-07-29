@@ -6,13 +6,13 @@
     <!-- SEO Utama -->
     <title><%= data.info.nama %> | Fullstack Developer Portfolio</title>
     <meta name="description" content="<%= data.info.deskripsi %>">
-    <meta name="keywords" content="Portfolio, Backend Developer, Express.js, Web Developer, Modern Portfolio">
+    <meta name="keywords" content="Portfolio, Fullstack Developer, Backend Developer, Express.js, Laravel, React, Web Developer, I Gede Wirawan">
     <meta name="author" content="<%= data.info.nama %>">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://nama-project-kamu.vercel.app/">
-    <meta property="og:title" content="Portofolio <%= data.info.nama %>">
+    <meta property="og:url" content="https://wirawan-portfolio.vercel.app/">
+    <meta property="og:title" content="Portfolio <%= data.info.nama %>">
     <meta property="og:description" content="<%= data.info.deskripsi %>">
     <meta property="og:image" content="/images/hero-bg.png">
     
@@ -20,87 +20,297 @@
     <meta name="color-scheme" content="dark">
     
     <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800;900&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/style.css?v=5">
+    <link rel="stylesheet" href="/style.css?v=23">
     <link rel="icon" href="/favicon.png" type="image/png">
 </head>
 <body>
+    <!-- CUSTOM CURSOR (desktop only) -->
+    <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
+    <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
+
+    <!-- SCROLL PROGRESS BAR -->
+    <div id="scroll-progress-bar"></div>
+
+    <!-- TERMINAL PRELOADER -->
+    <div id="preloader">
+        <div class="terminal-loader">
+            <div class="terminal-header">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+                <span class="terminal-title">wirawan@portfolio:~</span>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line"><span class="terminal-prompt">wirawan@portfolio:~$</span> <span id="preloader-typing"></span><span class="terminal-cursor"></span></div>
+                <div id="preloader-output" class="terminal-output"></div>
+            </div>
+        </div>
+    </div>
     
-    <!-- AMBIENT BACKGROUND -->
-    <div class="ambient-bg">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
+
+    <!-- ============================
+         PARALLAX SCENE
+         Layers driven by Lenis + GSAP ScrollTrigger.
+         Glass bento cards (backdrop-filter) reveal the scene below.
+         ============================ -->
+    <div class="parallax-scene" id="parallax-scene">
+        <!-- Layer 1: Stellar/cosmic background image (slowest) -->
+        <div class="pxl-layer pxl-stellar" id="pxl-stellar">
+            <img src="/images/stellar-bg.png" alt="" class="pxl-stellar-img" aria-hidden="true">
+        </div>
+        <!-- Layer 2: Large atmospheric glowing orbs (medium) -->
+        <div class="pxl-layer pxl-orbs" id="pxl-orbs">
+            <div class="pxl-orb pxl-orb-1"></div>
+            <div class="pxl-orb pxl-orb-2"></div>
+            <div class="pxl-orb pxl-orb-3"></div>
+            <div class="pxl-orb pxl-orb-4"></div>
+        </div>
+        <!-- Layer 3: Rotating geometric ring shapes (faster) -->
+        <div class="pxl-layer pxl-shapes" id="pxl-shapes">
+            <div class="pxl-shape pxl-shape-1"></div>
+            <div class="pxl-shape pxl-shape-2"></div>
+            <div class="pxl-shape pxl-shape-3"></div>
+        </div>
+        <!-- Layer 4: Subtle perspective grid (opposite direction) -->
+        <div class="pxl-layer pxl-grid" id="pxl-grid"></div>
+        <!-- Vignette overlay for readability -->
+        <div class="pxl-overlay"></div>
     </div>
 
     <!-- NAVIGATION -->
     <nav id="main-nav">
         <div class="nav-container">
             <div class="logo">WIRAWAN.</div>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#resume">Resume</a>
-                <a href="#projects">Projects</a>
-                <a href="#certifications">Certificates</a>
+            <div class="nav-links" id="nav-links">
+                <a href="#home" class="nav-link" data-section="home">Home</a>
+                <a href="#skills" class="nav-link" data-section="skills">Skills</a>
+                <a href="#resume" class="nav-link" data-section="resume">Resume</a>
+                <a href="#projects" class="nav-link" data-section="projects">Projects</a>
+                <a href="#certifications" class="nav-link" data-section="certifications">Certificates</a>
             </div>
+            <!-- Hamburger Menu Button (Mobile) -->
+            <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
         </div>
     </nav>
 
+    <!-- MOBILE DRAWER -->
+    <div id="mobile-drawer" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+        <div class="drawer-overlay" id="drawer-overlay"></div>
+        <div class="drawer-panel">
+            <div class="drawer-header">
+                <div class="logo">WIRAWAN.</div>
+                <button class="drawer-close" id="drawer-close" aria-label="Close menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="drawer-nav">
+                <a href="#home" class="drawer-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="#skills" class="drawer-link">
+                    <i class="fas fa-code"></i> Skills
+                </a>
+                <a href="#resume" class="drawer-link">
+                    <i class="fas fa-file-alt"></i> Resume
+                </a>
+                <a href="#projects" class="drawer-link">
+                    <i class="fas fa-briefcase"></i> Projects
+                </a>
+                <a href="#certifications" class="drawer-link">
+                    <i class="fas fa-certificate"></i> Certificates
+                </a>
+            </nav>
+            <div class="drawer-footer">
+                <a href="https://github.com/wiraputra" target="_blank" rel="noopener noreferrer" class="drawer-social"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/i-gede-wirawan-849651172/" target="_blank" rel="noopener noreferrer" class="drawer-social"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </div>
+
     <div class="bento-container" style="padding-top: 100px;">
         
-        <!-- BENTO HERO & SKILLS -->
-        <section id="home" class="bento-grid hero-bento">
+        <!-- BENTO HERO & SKILLS (12-Row Layout) -->
+        <section id="home" class="hero-bento-grid">
             
-            <!-- Box 1: Intro (Large) -->
-            <div class="bento-item bento-col-span-2 bento-row-span-2 intro-box gsap-bento">
-                <div class="status-badge">
-                    <div class="pulse-dot"></div> Available for Projects
-                </div>
-                <h1>Hi, I'm <span class="gradient-text"><%= data.info.nama %></span></h1>
-                <h2 id="typing-text"></h2>
-                <p class="desc"><%= data.info.deskripsi %></p>
-                <div class="hero-btns">
-                    <a href="mailto:wirawanw62@gmail.com" class="btn btn-glow">
-                        <i class="fas fa-paper-plane"></i> Contact Me
-                    </a>
-                    <a href="/cv.pdf" download="CV_I_Gede_Wirawan.pdf" target="_blank" class="btn btn-outline" rel="noopener noreferrer">
-                        <i class="fas fa-file-download"></i> Download CV
-                    </a>
+            <!-- Card 1: Core Tech Stack (Col 1, Row 1-5) -->
+            <div class="bento-item bento-item-1 gsap-bento">
+                <div class="card-1-content">
+                    <h3 class="space-grotesk-title">Modern Stack</h3>
+                    <div class="colored-circles">
+                        <span class="circle circle-react" style="background: #61DAFB; box-shadow: 0 0 25px #61DAFB;" title="React"></span>
+                        <span class="circle circle-ts" style="background: #3178C6; box-shadow: 0 0 25px #3178C6;" title="TypeScript"></span>
+                        <span class="circle circle-laravel" style="background: #FF2D20; box-shadow: 0 0 25px #FF2D20;" title="Laravel"></span>
+                        <span class="circle circle-tailwind" style="background: #38BDF8; box-shadow: 0 0 25px #38BDF8;" title="Tailwind"></span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Box 2: Photo (Square) -->
-            <div class="bento-item photo-box gsap-bento flex-center">
-                <img src="<%= data.info.foto %>" alt="Foto Profil" class="profile-img" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'">
-            </div>
+            <!-- Card 2: Backend/CD Mockup (Col 1, Row 6-12) -->
+            <div class="bento-item bento-item-2 gsap-bento">
+                <div class="cd-mockup-wrapper">
+                    <p class="try-text">Building robust &amp; secure database architectures and backend APIs.</p>
+                    
+                    <!-- Backend Tech Stack Badges -->
+                    <div class="backend-tech-list">
+                        <span class="tech-tag"><i class="fab fa-laravel" style="color: #FF2D20;"></i> Laravel</span>
+                        <span class="tech-tag"><i class="fab fa-php" style="color: #777BB4;"></i> PHP</span>
+                        <span class="tech-tag"><i class="fas fa-database" style="color: #4479A1;"></i> MySQL</span>
+                        <span class="tech-tag"><i class="fab fa-node-js" style="color: #339933;"></i> Node.js</span>
+                        <span class="tech-tag"><i class="fab fa-python" style="color: #3776AB;"></i> Python</span>
+                        <span class="tech-tag"><i class="fab fa-java" style="color: #007396;"></i> Java</span>
+                    </div>
 
-            <!-- Box 3: Roles/Mini Info -->
-            <div class="bento-item mini-info-box gsap-bento flex-center">
-                <h3>Fullstack Developer</h3>
-                <p>Passionate about crafting scalable backend and modern interfaces.</p>
-            </div>
-
-            <!-- Box 4: Tech Stack (Wide) -->
-            <div class="bento-item bento-col-span-3 skills-box gsap-bento" id="skills">
-                <h3>Tech Stack</h3>
-                <div class="skills-mini-grid">
-                    <% data.skills.forEach(skill => { %>
-                        <div class="skill-pill">
-                            <i class="<%= skill.icon %>" <% if (skill.color) { %>style="color: <%= skill.color %>"<% } %>></i> 
-                            <span><%= skill.nama %></span>
+                    <div class="cd-container">
+                        <!-- Background Vinyls for Stacked Effect -->
+                        <div class="cd-record-back cd-record-back-2"></div>
+                        <div class="cd-record-back cd-record-back-1"></div>
+                        
+                        <!-- Main Vinyl -->
+                        <div class="cd-record">
+                            <img src="<%= data.info.foto %>" alt="Record Center" class="cd-center-img" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'">
                         </div>
-                    <% }); %>
+                        <div class="cd-sleeve">
+                            <i class="fas fa-database database-icon-pulse"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Central Showcase "DEV" (Col 2, Row 1-9) -->
+            <div class="bento-item bento-item-3 gsap-bento flex-center">
+                <div class="prism-text-bg parallax-text" data-speed="0.3">DEV</div>
+                <img src="/images/glass-star.png" alt="3D Glass Star" class="glass-star-3d" id="glass-star">
+            </div>
+
+            <!-- Card 6: System Console Player (Col 2, Row 10-12) -->
+            <div class="bento-item bento-item-6 gsap-bento">
+                <div class="system-console">
+                    <div class="console-header">
+                        <div class="console-dot dot-red"></div>
+                        <div class="console-dot dot-yellow"></div>
+                        <div class="console-dot dot-green"></div>
+                    </div>
+                    <div class="console-display">
+                        <span class="console-loc">LOC: BALI, ID</span>
+                        <span class="console-status"><span class="pulse-dot"></span> ACTIVE CODING</span>
+                    </div>
+                    <div class="console-controls">
+                        <button class="control-btn" aria-label="Previous"><i class="fas fa-backward"></i></button>
+                        <button class="control-btn play-btn" aria-label="Play"><i class="fas fa-play"></i></button>
+                        <button class="control-btn" aria-label="Next"><i class="fas fa-forward"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Profile Portrait (Col 3, Row 1-8) -->
+            <div class="bento-item bento-item-4 gsap-bento">
+                <div class="profile-portrait-wrapper">
+                    <img src="<%= data.info.foto %>" alt="<%= data.info.nama %>" class="portrait-img" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'">
+                    <div class="portrait-info">
+                        <h3><%= data.info.nama %></h3>
+                        <h4 id="typing-text"></h4>
+                        <p class="portrait-desc"><%= data.info.deskripsi %></p>
+                        <a href="/cv.pdf" download="CV_I_Gede_Wirawan.pdf" target="_blank" class="btn btn-outline cv-btn-small" rel="noopener noreferrer">
+                            <i class="fas fa-file-download"></i> Download CV
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5: CTA / Hire Me (Col 3, Row 9-12) -->
+            <div class="bento-item bento-item-5 gsap-bento flex-center" style="background-image: url('/images/stellar-bg.png'); background-size: cover; background-position: center;">
+                <div class="cta-overlay-bg"></div>
+                <div class="cta-content">
+                    <div class="available-badge">
+                        <div class="pulse-dot"></div> Open For Projects
+                    </div>
+                    <div class="cta-btns">
+                        <a href="mailto:wirawanw62@gmail.com" class="btn btn-glow" id="hire-me-btn">
+                            <i class="fas fa-paper-plane"></i> Hire Me Now
+                        </a>
+                    </div>
                 </div>
             </div>
             
         </section>
 
-        <!-- RESUME SECTION -->
+        <!-- ============================
+             SKILLS MARQUEE SECTION
+             ============================ -->
+        <section id="skills" class="skills-marquee-section">
+            <div class="section-header gsap-bento">
+                <h2>Tech Stack</h2>
+                <p class="section-subtitle">Technologies I work with</p>
+            </div>
+
+            <!-- Marquee Row 1 (Left to Right) -->
+            <div class="marquee-wrapper">
+                <div class="marquee-track marquee-ltr">
+                    <% const skillsRow1 = data.skills.slice(0, Math.ceil(data.skills.length / 2)); %>
+                    <% [...skillsRow1, ...skillsRow1].forEach(skill => { %>
+                        <div class="marquee-item">
+                            <i class="<%= skill.icon %>" style="color: <%= skill.color %>; font-size: 1.4rem;"></i>
+                            <span><%= skill.nama %></span>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+
+            <!-- Marquee Row 2 (Right to Left) -->
+            <div class="marquee-wrapper" style="margin-top: 16px;">
+                <div class="marquee-track marquee-rtl">
+                    <% const skillsRow2 = data.skills.slice(Math.ceil(data.skills.length / 2)); %>
+                    <% [...skillsRow2, ...skillsRow2].forEach(skill => { %>
+                        <div class="marquee-item">
+                            <i class="<%= skill.icon %>" style="color: <%= skill.color %>; font-size: 1.4rem;"></i>
+                            <span><%= skill.nama %></span>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================
+             STATS COUNTER SECTION
+             ============================ -->
+        <section class="stats-section gsap-bento">
+            <div class="stats-grid">
+                <div class="stat-card" id="stat-projects">
+                    <div class="stat-number" data-target="6">0</div>
+                    <div class="stat-label">Projects Built</div>
+                </div>
+                <div class="stat-card" id="stat-certs">
+                    <div class="stat-number" data-target="7">0</div>
+                    <div class="stat-label">Certifications</div>
+                </div>
+                <div class="stat-card" id="stat-years">
+                    <div class="stat-number" data-target="3">0</div>
+                    <div class="stat-label">Years Coding</div>
+                </div>
+                <div class="stat-card" id="stat-tech">
+                    <div class="stat-number" data-target="20">0</div>
+                    <div class="stat-label">Technologies</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================
+             RESUME SECTION
+             ============================ -->
         <section id="resume">
             <div class="section-header gsap-bento">
                 <h2>Resume</h2>
+                <p class="section-subtitle">My professional journey</p>
             </div>
             <div class="bento-grid resume-bento">
                 <!-- Exp -->
@@ -134,10 +344,13 @@
             </div>
         </section>
 
-        <!-- PROJECTS SECTION -->
+        <!-- ============================
+             PROJECTS SECTION
+             ============================ -->
         <section id="projects">
             <div class="section-header gsap-bento">
                 <h2>Featured Projects</h2>
+                <p class="section-subtitle">Things I've built</p>
             </div>
             <div class="bento-grid projects-bento">
                 <% data.projects.forEach((project, index) => { %>
@@ -172,10 +385,13 @@
             </div>
         </section>
 
-        <!-- CERTIFICATIONS SECTION -->
+        <!-- ============================
+             CERTIFICATIONS SECTION
+             ============================ -->
         <section id="certifications">
             <div class="section-header gsap-bento">
                 <h2>Certifications</h2>
+                <p class="section-subtitle">Proof of continuous learning</p>
             </div>
             
             <div class="bento-grid cert-bento">
@@ -188,11 +404,11 @@
                             <h3><%= cert.title %></h3>
                             <span class="cert-issuer"><%= cert.issuer %></span>
                             <div class="cert-actions">
-                                <button class="btn-icon" data-img="<%= cert.img %>" onclick="openModal(this.getAttribute('data-img'))">
+                                <button class="btn-icon" data-img="<%= cert.img %>" onclick="openModal(this.getAttribute('data-img'))" aria-label="View certificate">
                                     <i class="fas fa-eye"></i>
                                 </button>
                                 <% if (cert.link) { %>
-                                    <a href="<%= cert.link %>" target="_blank" rel="noopener noreferrer" class="btn-icon">
+                                    <a href="<%= cert.link %>" target="_blank" rel="noopener noreferrer" class="btn-icon" aria-label="Open certificate link">
                                         <i class="fas fa-external-link-alt"></i>
                                     </a>
                                 <% } %>
@@ -204,21 +420,34 @@
         </section>
 
         <footer>
-            <div class="bento-item footer-content gsap-bento" style="margin-top: 50px; text-align: center;">
-                <p>Designed with Bento Box Grid.</p>
-                <p>&copy; 2026 I Gede Wirawan. All rights reserved.</p>
-                <div class="social-links" style="margin-top: 15px; display: flex; gap: 20px; justify-content: center;">
-                    <a href="https://github.com/wiraputra" style="color: var(--text-muted); font-size: 1.5rem;"><i class="fab fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/i-gede-wirawan-849651172/" style="color: var(--text-muted); font-size: 1.5rem;"><i class="fab fa-linkedin"></i></a>
+            <div class="bento-item footer-content gsap-bento">
+                <div class="footer-logo">WIRAWAN.</div>
+                <p class="footer-tagline">Designed & Built with ❤️ using Bento Box Grid</p>
+                <div class="social-links">
+                    <a href="https://github.com/wiraputra" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/i-gede-wirawan-849651172/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="mailto:wirawanw62@gmail.com" class="social-link" aria-label="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
                 </div>
+                <p class="footer-copy">&copy; 2026 I Gede Wirawan. All rights reserved.</p>
             </div>
         </footer>
     </div>
 
-    <!-- Script Data via Dataset untuk mencegah IDE/Linter bugs -->
+    <!-- Script Data via Dataset -->
     <div id="portfolio-data" data-roles="<%= JSON.stringify(data.info.role) %>" style="display: none;"></div>
     
-    <!-- MODAL -->
+    <!-- BACK TO TOP BUTTON -->
+    <button id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- MODAL (Certificate) -->
     <div id="certModal" class="modal" onclick="closeModal()" style="display:none; position:fixed; z-index:2000; top:0; left:0; width:100%; height:100%; align-items:center; justify-content:center;">
         <span style="position:fixed; top:20px; right:40px; font-size:40px; cursor:pointer; color: white;">&times;</span>
         <img id="modalImage" class="modal-content" style="max-width:90%; max-height:90%; border-radius: 20px;">
@@ -239,11 +468,14 @@
         </div>
     </div>
 
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+
     <!-- GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <!-- Script JS -->
-    <script src="/script.js?v=5"></script>
+    <script src="/script.js?v=23"></script>
 </body>
 </html>
