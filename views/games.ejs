@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Minigames &amp; Interactive Arcade — <%= data.info.nama %></title>
+    <meta name="description" content="Explore interactive cybersecurity minigames, retro binary snake, and 3D WebGL particle blasting experiments by <%= data.info.nama %>">
+    <meta name="author" content="<%= data.info.nama %>">
+
+    <!-- Fonts: Poppins & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap">
+    
+    <!-- Icons: Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/style.css?v=60">
+    <link rel="icon" href="/favicon.png" type="image/png">
+</head>
+<body class="games-page-body">
+
+    <!-- Ambient Subtle Gradient Backdrop -->
+    <div class="ambient-gradient-backdrop" aria-hidden="true"></div>
+
+    <!-- ====================================================================
+         FLOATING NAVBAR
+         ==================================================================== -->
+    <header class="navbar-wrapper">
+        <nav class="floating-navbar" aria-label="Arcade Navigation">
+            <!-- Brand Logo -->
+            <a href="/" class="nav-logo" aria-label="Back to Portfolio">
+                <span class="logo-initials">GW</span>
+            </a>
+
+            <!-- Nav Links -->
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="/" class="nav-link"><i class="fas fa-arrow-left"></i> Portfolio</a></li>
+                <li><a href="#games-catalog" class="nav-link active">Game List</a></li>
+                <li><a href="#game-arena" class="nav-link">Play Arena</a></li>
+            </ul>
+
+            <!-- Right Actions: Theme Toggle + CTA -->
+            <div class="nav-actions">
+                <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Light and Dark Theme" title="Toggle Light / Dark Mode">
+                    <i class="fas fa-sun icon-sun" aria-hidden="true"></i>
+                    <i class="fas fa-moon icon-moon" aria-hidden="true"></i>
+                </button>
+
+                <a href="mailto:<%= data.info.email %>" class="btn-pill-cta" id="nav-cta-btn">
+                    Get in Touch
+                </a>
+
+                <!-- Mobile Hamburger Toggle -->
+                <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Drawer Overlay -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay"></div>
+    <div id="mobile-menu-drawer" class="mobile-menu-drawer" role="dialog" aria-modal="true">
+        <div class="mobile-menu-header">
+            <span class="logo-initials">GW</span>
+            <button type="button" class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">&times;</button>
+        </div>
+        <ul class="mobile-menu-links">
+            <li><a href="/" class="mobile-link"><i class="fas fa-arrow-left"></i> Back to Portfolio</a></li>
+            <li><a href="#games-catalog" class="mobile-link">Game List</a></li>
+            <li><a href="#game-arena" class="mobile-link">Play Arena</a></li>
+        </ul>
+        <div class="mobile-menu-footer">
+            <a href="mailto:<%= data.info.email %>" class="btn-pill-cta w-full text-center">Get in Touch</a>
+        </div>
+    </div>
+
+    <!-- MAIN PAGE CONTENT -->
+    <main class="main-content games-main-content">
+
+        <!-- ====================================================================
+             1. GAMES CATALOG SECTION (HERO HEADER + 3-COLUMN CARDS)
+             ==================================================================== -->
+        <section id="games-catalog" class="section-full games-catalog-section">
+            <div class="section-container">
+                
+                <!-- Unified Centered Hero Header -->
+                <div class="games-hero-header">
+                    <div class="hero-badge-pill">
+                        <i class="fas fa-gamepad"></i> Interactive Cyber Arcade &amp; Lab
+                    </div>
+                    <h1 class="games-hero-title">Developer Minigames</h1>
+                    <p class="games-hero-subtitle">
+                        A collection of interactive cybersecurity puzzles, retro binary logic, and 3D WebGL particle blasting experiments. Select any game below to play directly in the arena!
+                    </p>
+                    <div class="games-hero-stats">
+                        <div class="stat-pill">
+                            <i class="fas fa-shield-alt"></i> Cyber Code Breaker
+                        </div>
+                        <div class="stat-pill">
+                            <i class="fas fa-terminal"></i> Binary Snake
+                        </div>
+                        <div class="stat-pill">
+                            <i class="fas fa-atom"></i> 3D Particle Blaster
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3-Column Games Grid (Equal Heights) -->
+                <div class="games-card-grid">
+                    <% data.games.forEach((game, index) => { %>
+                        <article class="game-showcase-card" id="card-<%= game.id %>">
+                            <!-- Card Preview Media Header -->
+                            <div class="game-card-media" onclick="launchGame('<%= game.id %>')" role="button" tabindex="0" title="Click to Play <%= game.title %>">
+                                <img src="<%= game.img %>" alt="<%= game.title %> Preview" class="game-card-img" loading="lazy">
+                                <div class="game-media-overlay">
+                                    <span class="game-play-overlay-pill">
+                                        <i class="fas fa-play"></i> Play in Arena
+                                    </span>
+                                </div>
+                                <div class="game-badge-float">
+                                    <i class="<%= game.icon %>"></i> <%= game.badge %>
+                                </div>
+                            </div>
+
+                            <!-- Card Body Content -->
+                            <div class="game-card-content">
+                                <div class="game-category-tag"><%= game.category %></div>
+                                <h3 class="game-card-title"><%= game.title %></h3>
+                                <p class="game-card-desc"><%= game.desc %></p>
+
+                                <div class="game-meta-row">
+                                    <div class="game-highscore-badge" id="card-hs-badge-<%= game.id %>">
+                                        <i class="fas fa-trophy"></i> Best: <span id="card-hs-<%= game.id %>">0</span>
+                                    </div>
+                                    <span class="game-tag-pill">HTML5 / Canvas</span>
+                                </div>
+
+                                <!-- Card Action -->
+                                <div class="game-card-actions">
+                                    <button type="button" class="btn-launch-game" onclick="launchGame('<%= game.id %>')">
+                                        <span>Play in Arena</span>
+                                        <i class="fas fa-arrow-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                    <% }); %>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====================================================================
+             2. ACTIVE GAME ARENA (PLAYABLE STAGE)
+             ==================================================================== -->
+        <section id="game-arena" class="section-full game-arena-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <div class="hero-badge-pill arena-badge-pill">
+                        <i class="fas fa-tv"></i> Live Interactive Screen
+                    </div>
+                    <h2 class="section-title">Play Arena</h2>
+                    <p class="section-subtitle">Interact with your selected minigame in real-time on the arcade console below</p>
+                </div>
+                <div class="game-cabinet-frame" id="game-cabinet">
+                    
+                    <!-- Arcade Top Bar (HUD) -->
+                    <div class="arcade-hud-header">
+                        <div class="arcade-title-group">
+                            <i class="fas fa-gamepad arcade-icon"></i>
+                            <div>
+                                <h3 class="arcade-game-name" id="arena-game-title">Cyber Code Breaker</h3>
+                                <span class="arcade-status-pill" id="arena-status-badge">READY TO PLAY</span>
+                            </div>
+                        </div>
+
+                        <!-- Real-time HUD Scores -->
+                        <div class="arcade-hud-metrics">
+                            <div class="hud-metric-box">
+                                <span class="hud-label">SCORE</span>
+                                <span class="hud-val" id="hud-score">0</span>
+                            </div>
+                            <div class="hud-metric-box">
+                                <span class="hud-label">BEST</span>
+                                <span class="hud-val" id="hud-best">0</span>
+                            </div>
+                            <div class="hud-metric-box" id="hud-extra-box">
+                                <span class="hud-label" id="hud-extra-label">TIME</span>
+                                <span class="hud-val" id="hud-extra-val">45s</span>
+                            </div>
+                        </div>
+
+                        <!-- Arcade Controls -->
+                        <div class="arcade-hud-actions">
+                            <button type="button" class="arcade-btn-icon" id="btn-sound-toggle" title="Toggle Sound">
+                                <i class="fas fa-volume-up" id="sound-icon"></i>
+                            </button>
+                            <button type="button" class="arcade-btn-icon" id="btn-restart-game" title="Restart Game">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Instructions Bar -->
+                    <div class="arcade-instructions-bar">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="arena-instructions">Crack the 4-digit security PIN. Green = correct digit &amp; position, Yellow = correct digit in wrong position, Gray = digit not in PIN.</span>
+                    </div>
+
+                    <!-- ========================================================
+                         GAME STAGE 1: CYBER CODE BREAKER
+                         ======================================================== -->
+                    <div class="game-stage" id="stage-code-breaker">
+                        <div class="codebreaker-layout">
+                            
+                            <!-- Left: Decryption Console & Input -->
+                            <div class="cb-console-panel">
+                                <div class="cb-secret-display" id="cb-secret-display">
+                                    <div class="cb-slot" id="slot-0">?</div>
+                                    <div class="cb-slot" id="slot-1">?</div>
+                                    <div class="cb-slot" id="slot-2">?</div>
+                                    <div class="cb-slot" id="slot-3">?</div>
+                                </div>
+
+                                <div class="cb-current-input" id="cb-input-preview">
+                                    <span class="cb-char placeholder">_</span>
+                                    <span class="cb-char placeholder">_</span>
+                                    <span class="cb-char placeholder">_</span>
+                                    <span class="cb-char placeholder">_</span>
+                                </div>
+
+                                <!-- Virtual Cyber Keypad -->
+                                <div class="cb-keypad">
+                                    <button type="button" class="cb-key" data-val="1">1</button>
+                                    <button type="button" class="cb-key" data-val="2">2</button>
+                                    <button type="button" class="cb-key" data-val="3">3</button>
+                                    <button type="button" class="cb-key" data-val="4">4</button>
+                                    <button type="button" class="cb-key" data-val="5">5</button>
+                                    <button type="button" class="cb-key" data-val="6">6</button>
+                                    <button type="button" class="cb-key" data-val="7">7</button>
+                                    <button type="button" class="cb-key" data-val="8">8</button>
+                                    <button type="button" class="cb-key" data-val="9">9</button>
+                                    <button type="button" class="cb-key cb-key-fn" id="cb-key-back" title="Backspace"><i class="fas fa-backspace"></i></button>
+                                    <button type="button" class="cb-key" data-val="0">0</button>
+                                    <button type="button" class="cb-key cb-key-submit" id="cb-key-enter" title="Submit Guess"><i class="fas fa-key"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Right: Live Terminal Log & Attempt History -->
+                            <div class="cb-log-panel">
+                                <div class="cb-log-header">
+                                    <span><i class="fas fa-terminal"></i> SECURITY_LOG.TXT</span>
+                                    <span id="cb-attempts-left">ATTEMPTS LEFT: 6</span>
+                                </div>
+                                <div class="cb-log-body" id="cb-terminal-log">
+                                    <div class="log-line text-muted">[INIT] CYBERNET FIREWALL v4.18 LOCKED</div>
+                                    <div class="log-line text-muted">[SYS] PIN HAS 4 UNIQUE DIGITS (0-9)</div>
+                                    <div class="log-line text-mint">&gt; ENTER GUESS ON KEYPAD OR KEYBOARD...</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ========================================================
+                         GAME STAGE 2: BINARY SNAKE
+                         ======================================================== -->
+                    <div class="game-stage" id="stage-binary-snake" style="display: none;">
+                        <div class="snake-layout">
+                            <div class="snake-canvas-wrapper">
+                                <canvas id="snake-canvas" width="480" height="480"></canvas>
+                                
+                                <!-- Snake Overlay Screen (Start / Game Over) -->
+                                <div class="snake-screen-overlay" id="snake-overlay">
+                                    <div class="snake-overlay-card">
+                                        <i class="fas fa-terminal snake-overlay-icon"></i>
+                                        <h3 id="snake-overlay-title">BINARY SNAKE</h3>
+                                        <p id="snake-overlay-msg">Use Arrow keys or WASD to navigate the binary snake and eat software bugs!</p>
+                                        <button type="button" class="btn-pill-cta" id="btn-start-snake">Start Game</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mobile Touch D-Pad Controls -->
+                            <div class="snake-dpad-controls">
+                                <button type="button" class="dpad-btn dpad-up" data-dir="UP"><i class="fas fa-chevron-up"></i></button>
+                                <div class="dpad-mid-row">
+                                    <button type="button" class="dpad-btn dpad-left" data-dir="LEFT"><i class="fas fa-chevron-left"></i></button>
+                                    <div class="dpad-center-hub"><i class="fas fa-crosshairs"></i></div>
+                                    <button type="button" class="dpad-btn dpad-right" data-dir="RIGHT"><i class="fas fa-chevron-right"></i></button>
+                                </div>
+                                <button type="button" class="dpad-btn dpad-down" data-dir="DOWN"><i class="fas fa-chevron-down"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========================================================
+                         GAME STAGE 3: 3D PARTICLE BLASTER
+                         ======================================================== -->
+                    <div class="game-stage" id="stage-particle-blaster" style="display: none;">
+                        <div class="blaster-layout">
+                            <div class="blaster-canvas-container" id="blaster-container">
+                                <canvas id="blaster-canvas"></canvas>
+                                
+                                <!-- Custom Laser Crosshair -->
+                                <div class="blaster-crosshair" id="blaster-crosshair">
+                                    <div class="ch-circle"></div>
+                                    <div class="ch-dot"></div>
+                                </div>
+
+                                <!-- Blaster HUD Overlay -->
+                                <div class="blaster-hud">
+                                    <div class="blaster-combo" id="blaster-combo-display">COMBO x1</div>
+                                    <div class="blaster-hits" id="blaster-hits-display">TARGETS DESTROYED: 0</div>
+                                </div>
+
+                                <!-- Blaster Overlay Screen (Start / Game Over) -->
+                                <div class="blaster-screen-overlay" id="blaster-overlay">
+                                    <div class="blaster-overlay-card">
+                                        <i class="fas fa-atom blaster-overlay-icon"></i>
+                                        <h3 id="blaster-overlay-title">3D PARTICLE BLASTER</h3>
+                                        <p id="blaster-overlay-msg">Aim with cursor &amp; click to blast floating 3D spatial nodes into particle explosions within 30 seconds!</p>
+                                        <button type="button" class="btn-pill-cta" id="btn-start-blaster">Launch Mission</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ====================================================================
+         FOOTER
+         ==================================================================== -->
+    <footer class="footer-full">
+        <div class="footer-container">
+            <div class="footer-left">
+                <span class="footer-logo">GW.</span>
+                <p class="footer-copy">&copy; <%= new Date().getFullYear() %> <%= data.info.nama %>. All rights reserved.</p>
+            </div>
+            <div class="footer-links">
+                <a href="/" class="footer-nav-link">Home Portfolio</a>
+                <a href="<%= data.info.github %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">GitHub</a>
+                <a href="<%= data.info.linkedin %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">LinkedIn</a>
+                <a href="mailto:<%= data.info.email %>" class="footer-nav-link">Email</a>
+                <a href="#games-catalog" class="footer-nav-link" id="btn-back-to-top">Back to Top &uarr;</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Three.js CDN for 3D Particle Blaster -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Games Script -->
+    <script src="/games.js?v=20"></script>
+</body>
+</html>

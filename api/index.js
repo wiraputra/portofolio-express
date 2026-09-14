@@ -1,4 +1,4 @@
-const express = require('express');
+ const express = require('express');
 const path = require('path');
 const app = express();
 
@@ -7,174 +7,19 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(path.join(__dirname, '../public')));
 
-// --- DATA DATABASE BARU ---
-const dataPortfolio = {
-    info: {
-        nama: "I Gede Wirawan", 
-        role: ["Frontend Developer", "Cyber Security Enthusiast", "Tech Explorer"],
-        deskripsi: "I build fast, secure, and scalable web applications.",
-        foto: "/images/profile.jpeg" 
-    },
-    skills: [
-        // --- Baris 1 ---
-        { nama: "JavaScript", icon: "fab fa-js", color: "#F7DF1E" },
-        { nama: "HTML5", icon: "fab fa-html5", color: "#E34F26" },
-        { nama: "CSS3", icon: "fab fa-css3-alt", color: "#1572B6" },
-        { nama: "PHP", icon: "fab fa-php", color: "#777BB4" },
-        { nama: "Python", icon: "fab fa-python", color: "#3776AB" },
-        { nama: "Java", icon: "fab fa-java", color: "#007396" },
-        { nama: "Flutter", icon: "fas fa-mobile-screen", color: "#02569B" }, // Ikon alternatif (Mobile)
-        { nama: "Dart", icon: "fas fa-bullseye", color: "#0175C2" }, // Ikon alternatif (Dart target)
-        { nama: "Bootstrap", icon: "fab fa-bootstrap", color: "#7952B3" },
+// Import Portfolio Context
+const dataPortfolio = require('../context/portfolioContext');
 
-        // --- Baris 2 ---
-        { nama: "React", icon: "fab fa-react", color: "#61DAFB" },
-        { nama: "TypeScript", icon: "fas fa-code", color: "#3178C6" },
-        { nama: "Figma", icon: "fab fa-figma", color: "#F24E1E" },
-        { nama: "Anaconda", icon: "fas fa-circle-nodes", color: "#44A833" }, // Ikon alternatif (Nodes)
-        { nama: "Android Studio", icon: "fab fa-android", color: "#3DDC84" },
-        { nama: "Vue.js", icon: "fab fa-vuejs", color: "#4FC08D" },
-        { nama: "Laravel", icon: "fab fa-laravel", color: "#FF2D20" },
-        { nama: "MySQL", icon: "fas fa-database", color: "#4479A1" },
-        { nama: "Node.js", icon: "fab fa-node-js", color: "#339933" },
-        { nama: "SQLite", icon: "fas fa-server", color: "#003B57" },
-        { nama: "Tailwind CSS", icon: "fas fa-wind", color: "#06B6D4" } // Ikon alternatif (Angin)
-    ],
-    resume: {
-        experience: [
-            {
-                title: "Full Stack Developer (Magang Berdampak)",
-                place: "Interlace Studies Bali",
-                date: "2026 - Present",
-                desc: "Developing the 'Genuine Solution' platform, an application that connects employers and job seekers, featuring an admin panel to mediate and facilitate the process between both parties."
-            },
-            {
-                title: "Frontend Developer",
-                place: "Interlace Studies Bali",
-                date: "2025 - 2026",
-                desc: "Building fast interfaces for web applications using React."
-            }
-        ],
-        education: [
-            {
-                title: "Bachelor of Applied Computer Science",
-                place: "Bali State Polytechnic",
-                date: "2023 - 2027",
-                desc: "Focus on software engineering and web technologies."
-            },
-            {
-                title: "Audio Video Engineering (Electronics)",
-                place: "State Vocational High School 1 Denpasar",
-                date: "2018 - 2021",
-                desc: "basics of electronics, installation, operation, maintenance, and repair of sound (audio) and image (video) systems and understanding of supporting hardware and software."
-            }
-        ]
-    },
-    // TAMBAHKAN DATA SERTIFIKAT DI SINI:
-    certificates: [
-        {
-            title: "Magang Berdampak MBKM — Interlace Studies",
-            issuer: "PT. Jalinan Studi Internusa",
-            img: "/images/cert7.png",
-            desc: "Telah berhasil menyelesaikan Program Merdeka Belajar Kampus Merdeka (MBKM) di Interlace Studies Bali yang dikelola oleh PT. Jalinan Studi Internusa, berlangsung pada 5 Maret – 31 Juli 2026. Nomor: 07/MBKM/JSI/VII/2026.",
-            link: "#"
-        },
-        {
-            title: "Minicredentials Information System Security",
-            issuer: "Sawah Cyber Security",
-            img: "/images/cert6.jpg",
-            desc: "Has demonstrated fundamental competency in ethical hacking principles by applying the Cyber Kill Chain framework, identifying OWASP Top 10 vulnerabilities, and utilizing industry standard penetration testing tools during a hands-on penetration testing project.",
-            link: "https://academy.sawahcyber.id/credentials/scs-coc-mciss-0210-2026-kb24vr"
-        },
-        {
-            title: "MiniCredential Information System Security",
-            issuer: "Sawah Cyber Security",
-            img: "/images/cert5.jpg",
-            desc: "Participated in comprehensive presentation sessions and hands-on Capture The Flag (CTF) practical exercises in information system security.",
-            link: "https://academy.sawahcyber.id/credentials/scs-cop-mciss-0210-2026-kaxhur"
-        },
-        {
-            title: "Masterclass Ethical Hacking",
-            issuer: "Sawah Cyber Security",
-            img: "/images/cert1.jpg", 
-            desc: "attend an Ethical Hacking Masterclass certification.",
-            link: "https://www.linkedin.com/in/i-gede-wirawan-849651172/details/certifications/1751696849497/single-media-viewer/?profileId=ACoAACkHyHkBVcXhh8p5HfYxunAjSHHRXG9fH9g"
-        },
-        {
-            title: "React.js : Beginner to Advanced",
-            issuer: "Udemy - Programmer Zaman Now",
-            img: "/images/cert2.jpg",
-            desc: "React training successfully completed.",
-            link: "https://www.linkedin.com/in/i-gede-wirawan-849651172/details/certifications/1759843624784/single-media-viewer/?profileId=ACoAACkHyHkBVcXhh8p5HfYxunAjSHHRXG9fH9g"
-        },
-        {
-            title: "Junior Web Developer Certification",
-            issuer: "Digitalent - Ministry of Communication and Information Technology",
-            img: "/images/cert3.jpg",
-            desc: "Complete Junior Web Developer training.",
-            link: "https://www.linkedin.com/in/i-gede-wirawan-849651172/details/certifications/1755056900288/single-media-viewer/?profileId=ACoAACkHyHkBVcXhh8p5HfYxunAjSHHRXG9fH9g"
-        },
-        {
-            title: "Code Generation and Optimization using IBM Granite",
-            issuer: "IBM",
-            img: "/images/cert4.jpg",
-            desc: "Complete IBM Granite training.",
-            link: "https://www.credly.com/badges/8209c5f4-8bbe-4622-bf4e-c839eb96da26/linked_in_profile"
-        }
-    ],
-    projects: [
-        { 
-            judul: "Genuine Solutions", 
-            deskripsi: "An internal recruitment and job-matching platform connecting employers and job seekers with an admin mediation panel.", 
-            tags: ["Laravel", "Inertia.js", "React", "TypeScript"],
-            logo: `<div class="project-logo-brand">
-                     <div class="gs-logo-icon"><span>GS</span></div>
-                     <div class="gs-logo-text">
-                       <span class="gs-logo-primary">Genuine</span>
-                       <span class="gs-logo-secondary">SOLUTIONS</span>
-                     </div>
-                   </div>`,
-            detailDesc: "Genuine Solutions is a modern full-stack recruitment management and Applicant Tracking System (ATS) platform designed to streamline the hiring process for agencies, employers, and job seekers. The system optimizes the recruitment pipeline through an automated skill-based matchmaking engine, bulk lead processing, and AI-driven candidate onboarding.",
-            detailImg: "/images/genuine-solutions.png",
-            link: "https://github.com/wiraputra"
-        },
-        { 
-            judul: "Campus Information Application", 
-            deskripsi: "A mobile application providing information for the PNB Campus.", 
-            tags: ["Dart", "Flutter", "Mobile"],
-            link: "https://github.com/wiraputra/aplikasi_informasi_kampus" // Ganti dengan link asli
-        },
-        { 
-            judul: "Kenangan Senja", 
-            deskripsi: "A web-based management application for a Coffeeshop.", 
-            tags: ["Blade", "Laravel", "PHP"],
-            link: "https://github.com/wiraputra/kenangansenja" 
-        },
-        { 
-            judul: "Travel Mind", 
-            deskripsi: "An itinerary planning website based on tourist preferences.", 
-            tags: ["Vue.js", "JavaScript"],
-            link: "https://github.com/wiraputra/travel-mind" 
-        },
-        { 
-            judul: "TeknoSolusi", 
-            deskripsi: "'TeknoSolusi Digital' Company Profile Website.", 
-            tags: ["PHP", "Web Development"],
-            link: "https://github.com/wiraputra/teknosolusi" 
-        },
-        { 
-            judul: "IBM Granite", 
-            deskripsi: "Experimenting and developing AI projects utilizing IBM Granite.", 
-            tags: ["Jupyter Notebook", "AI", "Python"],
-            link: "https://github.com/wiraputra/IBM_Granite" 
-        }
-    ]
-};
 
 // Route Home
 app.get('/', (req, res) => {
     // Kita harus mengirim object dengan key 'data' agar terbaca di EJS
     res.render('home', { data: dataPortfolio });
+});
+
+// Route Games Arcade
+app.get('/games', (req, res) => {
+    res.render('games', { data: dataPortfolio });
 });
 
 // Route API Projects (Opsional jika ingin akses JSON)

@@ -3,479 +3,455 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- SEO Utama -->
-    <title><%= data.info.nama %> | Fullstack Developer Portfolio</title>
+    
+    <!-- SEO Meta Tags -->
+    <title><%= data.info.nama %> — Portfolio</title>
     <meta name="description" content="<%= data.info.deskripsi %>">
-    <meta name="keywords" content="Portfolio, Fullstack Developer, Backend Developer, Express.js, Laravel, React, Web Developer, I Gede Wirawan">
+    <meta name="keywords" content="Portfolio, Fullstack Developer, Frontend Developer, React, Laravel, Express, <%= data.info.nama %>">
     <meta name="author" content="<%= data.info.nama %>">
 
-    <!-- Open Graph / Social Media -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://wirawan-portfolio.vercel.app/">
     <meta property="og:title" content="Portfolio <%= data.info.nama %>">
     <meta property="og:description" content="<%= data.info.deskripsi %>">
-    <meta property="og:image" content="/images/hero-bg.png">
-    
-    <!-- Mencegah Browser membalik warna jika menggunakan Force Dark Mode -->
-    <meta name="color-scheme" content="dark">
-    
-    <!-- Fonts -->
+    <meta property="og:image" content="<%= data.info.foto %>">
+
+    <!-- Fonts: Poppins & Inter (Reference exact match) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800;900&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap">
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/style.css?v=23">
+    <!-- Icons: Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/style.css?v=50">
     <link rel="icon" href="/favicon.png" type="image/png">
 </head>
 <body>
-    <!-- CUSTOM CURSOR (desktop only) -->
-    <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
-    <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
 
-    <!-- SCROLL PROGRESS BAR -->
-    <div id="scroll-progress-bar"></div>
+    <!-- Interactive Three.js Background Canvas -->
+    <canvas id="three-canvas" class="three-canvas" aria-hidden="true"></canvas>
 
-    <!-- TERMINAL PRELOADER -->
-    <div id="preloader">
-        <div class="terminal-loader">
-            <div class="terminal-header">
-                <span class="terminal-dot dot-red"></span>
-                <span class="terminal-dot dot-yellow"></span>
-                <span class="terminal-dot dot-green"></span>
-                <span class="terminal-title">wirawan@portfolio:~</span>
-            </div>
-            <div class="terminal-body">
-                <div class="terminal-line"><span class="terminal-prompt">wirawan@portfolio:~$</span> <span id="preloader-typing"></span><span class="terminal-cursor"></span></div>
-                <div id="preloader-output" class="terminal-output"></div>
-            </div>
-        </div>
-    </div>
-    
+    <!-- Ambient Subtle Gradient Backdrop -->
+    <div class="ambient-gradient-backdrop" aria-hidden="true"></div>
 
-    <!-- ============================
-         PARALLAX SCENE
-         Layers driven by Lenis + GSAP ScrollTrigger.
-         Glass bento cards (backdrop-filter) reveal the scene below.
-         ============================ -->
-    <div class="parallax-scene" id="parallax-scene">
-        <!-- Layer 1: Stellar/cosmic background image (slowest) -->
-        <div class="pxl-layer pxl-stellar" id="pxl-stellar">
-            <img src="/images/stellar-bg.png" alt="" class="pxl-stellar-img" aria-hidden="true">
-        </div>
-        <!-- Layer 2: Large atmospheric glowing orbs (medium) -->
-        <div class="pxl-layer pxl-orbs" id="pxl-orbs">
-            <div class="pxl-orb pxl-orb-1"></div>
-            <div class="pxl-orb pxl-orb-2"></div>
-            <div class="pxl-orb pxl-orb-3"></div>
-            <div class="pxl-orb pxl-orb-4"></div>
-        </div>
-        <!-- Layer 3: Rotating geometric ring shapes (faster) -->
-        <div class="pxl-layer pxl-shapes" id="pxl-shapes">
-            <div class="pxl-shape pxl-shape-1"></div>
-            <div class="pxl-shape pxl-shape-2"></div>
-            <div class="pxl-shape pxl-shape-3"></div>
-        </div>
-        <!-- Layer 4: Subtle perspective grid (opposite direction) -->
-        <div class="pxl-layer pxl-grid" id="pxl-grid"></div>
-        <!-- Vignette overlay for readability -->
-        <div class="pxl-overlay"></div>
-    </div>
+    <!-- ====================================================================
+         FLOATING NAVBAR (EXACT REFERENCE SPECIFICATION)
+         ==================================================================== -->
+    <header class="navbar-wrapper">
+        <nav class="floating-navbar" aria-label="Main Navigation">
+            <!-- Brand Logo -->
+            <a href="#home" class="nav-logo" aria-label="Home">
+                <span class="logo-initials">GW</span>
+            </a>
 
-    <!-- NAVIGATION -->
-    <nav id="main-nav">
-        <div class="nav-container">
-            <div class="logo">WIRAWAN.</div>
-            <div class="nav-links" id="nav-links">
-                <a href="#home" class="nav-link" data-section="home">Home</a>
-                <a href="#skills" class="nav-link" data-section="skills">Skills</a>
-                <a href="#resume" class="nav-link" data-section="resume">Resume</a>
-                <a href="#projects" class="nav-link" data-section="projects">Projects</a>
-                <a href="#certifications" class="nav-link" data-section="certifications">Certificates</a>
-            </div>
-            <!-- Hamburger Menu Button (Mobile) -->
-            <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-        </div>
-    </nav>
+            <!-- Nav Links (Desktop) -->
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link active" data-section="home">Home</a></li>
+                <li><a href="#skills" class="nav-link" data-section="skills">Skills</a></li>
+                <li><a href="#projects" class="nav-link" data-section="projects">Projects</a></li>
+                <li><a href="#experience" class="nav-link" data-section="experience">Experience</a></li>
+                <li><a href="#certificates" class="nav-link" data-section="certificates">Certificates</a></li>
+                <li><a href="/games" class="nav-link nav-link-games" title="Play Interactive Minigames"><i class="fas fa-gamepad"></i> Games</a></li>
+            </ul>
 
-    <!-- MOBILE DRAWER -->
-    <div id="mobile-drawer" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
-        <div class="drawer-overlay" id="drawer-overlay"></div>
-        <div class="drawer-panel">
-            <div class="drawer-header">
-                <div class="logo">WIRAWAN.</div>
-                <button class="drawer-close" id="drawer-close" aria-label="Close menu">
-                    <i class="fas fa-times"></i>
+            <!-- Right Actions: Theme Toggle + Get In Touch + 3D Animation Switcher -->
+            <div class="nav-actions">
+                <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Light and Dark Theme" title="Toggle Light / Dark Mode">
+                    <i class="fas fa-sun icon-sun" aria-hidden="true"></i>
+                    <i class="fas fa-moon icon-moon" aria-hidden="true"></i>
+                </button>
+
+                <a href="mailto:<%= data.info.email %>" class="btn-pill-cta" id="nav-cta-btn">
+                    Get in Touch
+                </a>
+
+                <!-- 3D FX Switcher Dropdown (Positioned to the right of Get in Touch) -->
+                <div class="fx-dropdown-wrapper">
+                    <button type="button" class="fx-switcher-btn" id="fx-switcher-btn" aria-label="Switch 3D Animation Effect" title="Choose 3D Background Effect">
+                        <i class="fas fa-shapes"></i>
+                        <span class="fx-active-label" id="fx-active-label">3D: Torus Knot</span>
+                        <i class="fas fa-chevron-down fx-chevron"></i>
+                    </button>
+                    <div class="fx-dropdown-menu" id="fx-dropdown-menu">
+                        <button type="button" class="fx-dropdown-item active" data-fx="torus">
+                            <span>🪐 3D Torus Knot</span>
+                        </button>
+                        <button type="button" class="fx-dropdown-item" data-fx="wave">
+                            <span>🌊 3D Digital Wave</span>
+                        </button>
+                        <button type="button" class="fx-dropdown-item" data-fx="constellation">
+                            <span>✨ Constellation Network</span>
+                        </button>
+                        <button type="button" class="fx-dropdown-item" data-fx="stardust">
+                            <span>🌌 Ambient Stardust</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Hamburger Toggle -->
+                <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
                 </button>
             </div>
-            <nav class="drawer-nav">
-                <a href="#home" class="drawer-link">
-                    <i class="fas fa-home"></i> Home
-                </a>
-                <a href="#skills" class="drawer-link">
-                    <i class="fas fa-code"></i> Skills
-                </a>
-                <a href="#resume" class="drawer-link">
-                    <i class="fas fa-file-alt"></i> Resume
-                </a>
-                <a href="#projects" class="drawer-link">
-                    <i class="fas fa-briefcase"></i> Projects
-                </a>
-                <a href="#certifications" class="drawer-link">
-                    <i class="fas fa-certificate"></i> Certificates
-                </a>
-            </nav>
-            <div class="drawer-footer">
-                <a href="https://github.com/wiraputra" target="_blank" rel="noopener noreferrer" class="drawer-social"><i class="fab fa-github"></i></a>
-                <a href="https://www.linkedin.com/in/i-gede-wirawan-849651172/" target="_blank" rel="noopener noreferrer" class="drawer-social"><i class="fab fa-linkedin"></i></a>
-            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Drawer Overlay -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay"></div>
+    <div id="mobile-menu-drawer" class="mobile-menu-drawer" role="dialog" aria-modal="true">
+        <div class="mobile-menu-header">
+            <span class="logo-initials">GW</span>
+            <button type="button" class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">&times;</button>
+        </div>
+        <ul class="mobile-menu-links">
+            <li><a href="#home" class="mobile-link">Home</a></li>
+            <li><a href="#skills" class="mobile-link">Skills</a></li>
+            <li><a href="#projects" class="mobile-link">Projects</a></li>
+            <li><a href="#experience" class="mobile-link">Experience</a></li>
+            <li><a href="#certificates" class="mobile-link">Certificates</a></li>
+            <li><a href="/games" class="mobile-link"><i class="fas fa-gamepad"></i> Minigames</a></li>
+        </ul>
+        <div class="mobile-menu-footer">
+            <a href="mailto:<%= data.info.email %>" class="btn-pill-cta w-full text-center">Get in Touch</a>
         </div>
     </div>
 
-    <div class="bento-container" style="padding-top: 100px;">
-        
-        <!-- BENTO HERO & SKILLS (12-Row Layout) -->
-        <section id="home" class="hero-bento-grid">
-            
-            <!-- Card 1: Core Tech Stack (Col 1, Row 1-5) -->
-            <div class="bento-item bento-item-1 gsap-bento">
-                <div class="card-1-content">
-                    <h3 class="space-grotesk-title">Modern Stack</h3>
-                    <div class="colored-circles">
-                        <span class="circle circle-react" style="background: #61DAFB; box-shadow: 0 0 25px #61DAFB;" title="React"></span>
-                        <span class="circle circle-ts" style="background: #3178C6; box-shadow: 0 0 25px #3178C6;" title="TypeScript"></span>
-                        <span class="circle circle-laravel" style="background: #FF2D20; box-shadow: 0 0 25px #FF2D20;" title="Laravel"></span>
-                        <span class="circle circle-tailwind" style="background: #38BDF8; box-shadow: 0 0 25px #38BDF8;" title="Tailwind"></span>
-                    </div>
-                </div>
-            </div>
+    <!-- MAIN PAGE CONTENT (FULL-WIDTH SECTIONS) -->
+    <main class="main-content">
 
-            <!-- Card 2: Backend/CD Mockup (Col 1, Row 6-12) -->
-            <div class="bento-item bento-item-2 gsap-bento">
-                <div class="cd-mockup-wrapper">
-                    <p class="try-text">Building robust &amp; secure database architectures and backend APIs.</p>
+        <!-- ====================================================================
+             1. HERO SECTION (2-COLUMN SIGNATURE REFERENCE DESIGN)
+             ==================================================================== -->
+        <section id="home" class="section-hero">
+            <div class="hero-container">
+                <!-- Left Column: Typography & CTAs -->
+                <div class="hero-text-col">
+                    <p class="hero-greeting">Hello There 👋</p>
+                    <h1 class="hero-name"><%= data.info.nama %></h1>
                     
-                    <!-- Backend Tech Stack Badges -->
-                    <div class="backend-tech-list">
-                        <span class="tech-tag"><i class="fab fa-laravel" style="color: #FF2D20;"></i> Laravel</span>
-                        <span class="tech-tag"><i class="fab fa-php" style="color: #777BB4;"></i> PHP</span>
-                        <span class="tech-tag"><i class="fas fa-database" style="color: #4479A1;"></i> MySQL</span>
-                        <span class="tech-tag"><i class="fab fa-node-js" style="color: #339933;"></i> Node.js</span>
-                        <span class="tech-tag"><i class="fab fa-python" style="color: #3776AB;"></i> Python</span>
-                        <span class="tech-tag"><i class="fab fa-java" style="color: #007396;"></i> Java</span>
+                    <div class="hero-role-wrapper">
+                        <span class="hero-role-prefix">I'm a</span>
+                        <span class="hero-role-typing" id="typing-role"></span>
+                        <span class="typing-cursor" aria-hidden="true"></span>
                     </div>
 
-                    <div class="cd-container">
-                        <!-- Background Vinyls for Stacked Effect -->
-                        <div class="cd-record-back cd-record-back-2"></div>
-                        <div class="cd-record-back cd-record-back-1"></div>
-                        
-                        <!-- Main Vinyl -->
-                        <div class="cd-record">
-                            <img src="<%= data.info.foto %>" alt="Record Center" class="cd-center-img" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'">
-                        </div>
-                        <div class="cd-sleeve">
-                            <i class="fas fa-database database-icon-pulse"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <p class="hero-bio">
+                        <%= data.info.deskripsi %> I believe great design and solid code are the bridge between technology and people.
+                    </p>
 
-            <!-- Card 3: Central Showcase "DEV" (Col 2, Row 1-9) -->
-            <div class="bento-item bento-item-3 gsap-bento flex-center">
-                <div class="prism-text-bg parallax-text" data-speed="0.3">DEV</div>
-                <img src="/images/glass-star.png" alt="3D Glass Star" class="glass-star-3d" id="glass-star">
-            </div>
-
-            <!-- Card 6: System Console Player (Col 2, Row 10-12) -->
-            <div class="bento-item bento-item-6 gsap-bento">
-                <div class="system-console">
-                    <div class="console-header">
-                        <div class="console-dot dot-red"></div>
-                        <div class="console-dot dot-yellow"></div>
-                        <div class="console-dot dot-green"></div>
-                    </div>
-                    <div class="console-display">
-                        <span class="console-loc">LOC: BALI, ID</span>
-                        <span class="console-status"><span class="pulse-dot"></span> ACTIVE CODING</span>
-                    </div>
-                    <div class="console-controls">
-                        <button class="control-btn" aria-label="Previous"><i class="fas fa-backward"></i></button>
-                        <button class="control-btn play-btn" aria-label="Play"><i class="fas fa-play"></i></button>
-                        <button class="control-btn" aria-label="Next"><i class="fas fa-forward"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 4: Profile Portrait (Col 3, Row 1-8) -->
-            <div class="bento-item bento-item-4 gsap-bento">
-                <div class="profile-portrait-wrapper">
-                    <img src="<%= data.info.foto %>" alt="<%= data.info.nama %>" class="portrait-img" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'">
-                    <div class="portrait-info">
-                        <h3><%= data.info.nama %></h3>
-                        <h4 id="typing-text"></h4>
-                        <p class="portrait-desc"><%= data.info.deskripsi %></p>
-                        <a href="/cv.pdf" download="CV_I_Gede_Wirawan.pdf" target="_blank" class="btn btn-outline cv-btn-small" rel="noopener noreferrer">
-                            <i class="fas fa-file-download"></i> Download CV
+                    <div class="hero-actions-row">
+                        <a href="<%= data.info.cvUrl %>" download="<%= data.info.cvFilename %>" target="_blank" rel="noopener noreferrer" class="btn-pill-cta">
+                            <i class="fas fa-arrow-down"></i> Download CV
                         </a>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Card 5: CTA / Hire Me (Col 3, Row 9-12) -->
-            <div class="bento-item bento-item-5 gsap-bento flex-center" style="background-image: url('/images/stellar-bg.png'); background-size: cover; background-position: center;">
-                <div class="cta-overlay-bg"></div>
-                <div class="cta-content">
-                    <div class="available-badge">
-                        <div class="pulse-dot"></div> Open For Projects
+                        <div class="hero-socials">
+                            <a href="<%= data.info.github %>" target="_blank" rel="noopener noreferrer" class="btn-social" aria-label="GitHub Profile" title="GitHub">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="<%= data.info.linkedin %>" target="_blank" rel="noopener noreferrer" class="btn-social" aria-label="LinkedIn Profile" title="LinkedIn">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <button type="button" class="btn-social" id="btn-copy-email" data-email="<%= data.info.email %>" aria-label="Copy Email" title="Copy Email Address">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="cta-btns">
-                        <a href="mailto:wirawanw62@gmail.com" class="btn btn-glow" id="hire-me-btn">
-                            <i class="fas fa-paper-plane"></i> Hire Me Now
-                        </a>
+                </div>
+
+                <!-- Right Column: Signature Layered Tilted Card -->
+                <div class="hero-image-col">
+                    <div class="tilted-card-wrapper">
+                        <!-- Tilted Teal/Emerald Backdrop Shape -->
+                        <div class="tilted-backdrop-shape" aria-hidden="true"></div>
+
+                        <!-- Foreground Squircle Photo Card -->
+                        <div class="portrait-card">
+                            <img 
+                                src="<%= data.info.foto %>" 
+                                alt="<%= data.info.nama %>" 
+                                class="portrait-img"
+                                onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Wirawan'"
+                            >
+                        </div>
                     </div>
                 </div>
             </div>
-            
         </section>
 
-        <!-- ============================
-             SKILLS MARQUEE SECTION
-             ============================ -->
-        <section id="skills" class="skills-marquee-section">
-            <div class="section-header gsap-bento">
-                <h2>Tech Stack</h2>
-                <p class="section-subtitle">Technologies I work with</p>
-            </div>
-
-            <!-- Marquee Row 1 (Left to Right) -->
-            <div class="marquee-wrapper">
-                <div class="marquee-track marquee-ltr">
-                    <% const skillsRow1 = data.skills.slice(0, Math.ceil(data.skills.length / 2)); %>
-                    <% [...skillsRow1, ...skillsRow1].forEach(skill => { %>
-                        <div class="marquee-item">
-                            <i class="<%= skill.icon %>" <%- `style="color: ${skill.color}; font-size: 1.4rem;"` %>></i>
-                            <span><%= skill.nama %></span>
-                        </div>
-                    <% }); %>
+        <!-- ====================================================================
+             2. SKILLS SECTION (FULL-WIDTH)
+             ==================================================================== -->
+        <section id="skills" class="section-full">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">My Skills</h2>
+                    <p class="section-subtitle">Technologies and tools I work with to build robust software</p>
                 </div>
-            </div>
 
-            <!-- Marquee Row 2 (Right to Left) -->
-            <div class="marquee-wrapper" style="margin-top: 16px;">
-                <div class="marquee-track marquee-rtl">
-                    <% const skillsRow2 = data.skills.slice(Math.ceil(data.skills.length / 2)); %>
-                    <% [...skillsRow2, ...skillsRow2].forEach(skill => { %>
-                        <div class="marquee-item">
-                            <i class="<%= skill.icon %>" <%- `style="color: ${skill.color}; font-size: 1.4rem;"` %>></i>
-                            <span><%= skill.nama %></span>
+                <!-- Category Filters -->
+                <div class="skills-filter-nav">
+                    <button type="button" class="filter-pill active" data-filter="all">All Skills (<%= data.skills.length %>)</button>
+                    <button type="button" class="filter-pill" data-filter="Frontend">Frontend</button>
+                    <button type="button" class="filter-pill" data-filter="Backend">Backend</button>
+                    <button type="button" class="filter-pill" data-filter="Mobile & Tools">Mobile &amp; Tools</button>
+                </div>
+
+                <!-- Skills Grid -->
+                <div class="skills-card-grid" id="skills-grid">
+                    <% data.skills.forEach(skill => { %>
+                        <div class="skill-pill-card" data-category="<%= skill.category %>">
+                            <i class="<%= skill.icon %> skill-pill-icon" data-color="<%= skill.color %>"></i>
+                            <span class="skill-pill-name"><%= skill.nama %></span>
+                            <span class="skill-pill-badge"><%= skill.category %></span>
                         </div>
                     <% }); %>
                 </div>
             </div>
         </section>
 
-        <!-- ============================
-             STATS COUNTER SECTION
-             ============================ -->
-        <section class="stats-section gsap-bento">
-            <div class="stats-grid">
-                <div class="stat-card" id="stat-projects">
-                    <div class="stat-number" data-target="6">0</div>
-                    <div class="stat-label">Projects Built</div>
+        <!-- ====================================================================
+             3. PROJECTS SECTION (FULL-WIDTH)
+             ==================================================================== -->
+        <section id="projects" class="section-full">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Projects</h2>
+                    <p class="section-subtitle">Selected platforms and applications I've engineered</p>
                 </div>
-                <div class="stat-card" id="stat-certs">
-                    <div class="stat-number" data-target="7">0</div>
-                    <div class="stat-label">Certifications</div>
-                </div>
-                <div class="stat-card" id="stat-years">
-                    <div class="stat-number" data-target="3">0</div>
-                    <div class="stat-label">Years Coding</div>
-                </div>
-                <div class="stat-card" id="stat-tech">
-                    <div class="stat-number" data-target="20">0</div>
-                    <div class="stat-label">Technologies</div>
+
+                <div class="projects-card-grid">
+                    <% data.projects.forEach(project => { %>
+                        <article class="project-showcase-card <%= project.featured ? 'is-featured' : '' %> <%= project.img ? 'has-media' : '' %>">
+                            <% if (project.img) { %>
+                                <div class="project-card-media" onclick="openLightbox('<%= project.img %>')" role="button" tabindex="0" title="Click to view full image">
+                                    <img src="<%= project.img %>" alt="<%= project.judul %> Preview" class="project-card-img" loading="lazy">
+                                    <div class="project-media-overlay">
+                                        <span class="media-zoom-pill"><i class="fas fa-search-plus"></i> View Full Image</span>
+                                    </div>
+                                    <% if (project.featured) { %>
+                                        <div class="featured-ribbon-badge">
+                                            <i class="fas fa-star"></i> Featured Platform
+                                        </div>
+                                    <% } %>
+                                </div>
+                            <% } else if (project.featured) { %>
+                                <div class="featured-ribbon">
+                                    <i class="fas fa-star"></i> Featured Platform
+                                </div>
+                            <% } %>
+
+                            <div class="project-showcase-content">
+                                <h3 class="project-showcase-title"><%= project.judul %></h3>
+                                <p class="project-showcase-desc"><%= project.deskripsi %></p>
+
+                                <div class="project-showcase-tags">
+                                    <% project.tags.forEach(tag => { %>
+                                        <span class="tag-chip"><%= tag %></span>
+                                    <% }); %>
+                                </div>
+
+                                <div class="project-showcase-actions">
+                                    <% if (project.detailDesc) { %>
+                                        <button 
+                                            type="button" 
+                                            class="btn-text-link" 
+                                            data-judul="<%= project.judul %>"
+                                            data-desc="<%= project.detailDesc %>"
+                                            data-img="<%= project.detailImg || project.img || '' %>"
+                                            data-tags='<%= JSON.stringify(project.tags) %>'
+                                            onclick="openProjectModal(this)"
+                                        >
+                                            View Details <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                    <% } %>
+
+                                    <div class="project-links-group">
+                                        <% if (project.demo) { %>
+                                            <a href="<%= project.demo %>" target="_blank" rel="noopener noreferrer" class="btn-text-link demo-link">
+                                                <i class="fas fa-globe"></i> Live Project <i class="fas fa-external-link-alt"></i>
+                                            </a>
+                                        <% } %>
+
+                                        <% if (project.link) { %>
+                                            <a href="<%= project.link %>" target="_blank" rel="noopener noreferrer" class="btn-text-link repo-link">
+                                                <i class="fab fa-github"></i> Repository <i class="fas fa-external-link-alt"></i>
+                                            </a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    <% }); %>
                 </div>
             </div>
         </section>
 
-        <!-- ============================
-             RESUME SECTION
-             ============================ -->
-        <section id="resume">
-            <div class="section-header gsap-bento">
-                <h2>Resume</h2>
-                <p class="section-subtitle">My professional journey</p>
-            </div>
-            <div class="bento-grid resume-bento">
-                <!-- Exp -->
-                <div class="bento-item bento-col-span-1 gsap-bento">
-                    <h3 class="bento-title"><i class="fas fa-briefcase"></i> Experience</h3>
-                    <div class="timeline">
-                        <% data.resume.experience.forEach(item => { %>
-                            <div class="timeline-item">
-                                <span class="timeline-date"><%= item.date %></span>
-                                <h4><%= item.title %></h4>
-                                <span class="timeline-place"><%= item.place %></span>
-                                <p><%= item.desc %></p>
-                            </div>
-                        <% }); %>
-                    </div>
+        <!-- ====================================================================
+             4. EXPERIENCE & EDUCATION SECTION (FULL-WIDTH)
+             ==================================================================== -->
+        <section id="experience" class="section-full">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Experience &amp; Education</h2>
+                    <p class="section-subtitle">My professional career and academic milestones</p>
                 </div>
-                <!-- Edu -->
-                <div class="bento-item bento-col-span-1 gsap-bento">
-                    <h3 class="bento-title"><i class="fas fa-graduation-cap"></i> Education</h3>
-                    <div class="timeline">
-                        <% data.resume.education.forEach(item => { %>
-                            <div class="timeline-item">
-                                <span class="timeline-date"><%= item.date %></span>
-                                <h4><%= item.title %></h4>
-                                <span class="timeline-place"><%= item.place %></span>
-                                <p><%= item.desc %></p>
-                            </div>
-                        <% }); %>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- ============================
-             PROJECTS SECTION
-             ============================ -->
-        <section id="projects">
-            <div class="section-header gsap-bento">
-                <h2>Featured Projects</h2>
-                <p class="section-subtitle">Things I've built</p>
-            </div>
-            <div class="bento-grid projects-bento">
-                <% data.projects.forEach((project, index) => { %>
-                    <div class="bento-item project-card gsap-bento <%= index === 0 ? 'bento-col-span-2' : '' %>">
-                        <% if (project.logo) { %>
-                            <%- project.logo %>
-                        <% } else { %>
-                            <h3><%= project.judul %></h3>
-                        <% } %>
-                        <p><%= project.deskripsi %></p>
-                        <div class="tags">
-                            <% project.tags.forEach(tag => { %>
-                                <span class="tag"><%= tag %></span>
+                <div class="experience-two-col-grid">
+                    <!-- Work Experience -->
+                    <div class="timeline-column">
+                        <h3 class="timeline-column-heading">
+                            <i class="fas fa-briefcase"></i> Work Experience
+                        </h3>
+                        <div class="timeline-flow">
+                            <% data.resume.experience.forEach(exp => { %>
+                                <div class="timeline-flow-item">
+                                    <div class="timeline-flow-marker"></div>
+                                    <div class="timeline-flow-card">
+                                        <div class="timeline-flow-header">
+                                            <h4 class="timeline-flow-title"><%= exp.title %></h4>
+                                            <span class="timeline-date-chip"><%= exp.date %></span>
+                                        </div>
+                                        <p class="timeline-flow-place">
+                                            <i class="fas fa-building"></i> <%= exp.place %>
+                                        </p>
+                                        <p class="timeline-flow-desc"><%= exp.desc %></p>
+                                    </div>
+                                </div>
                             <% }); %>
                         </div>
-                        <% if (project.detailDesc) { %>
-                            <a href="#" class="project-link" 
-                               data-judul="<%= project.judul %>" 
-                               data-desc="<%= project.detailDesc %>" 
-                               data-img="<%= project.detailImg %>" 
-                               data-tags='<%= JSON.stringify(project.tags) %>' 
-                               onclick="openProjectModal(this); return false;">
-                                View Detail <i class="fas fa-arrow-right"></i>
-                            </a>
-                        <% } else { %>
-                            <a href="<%= project.link %>" class="project-link" target="_blank" rel="noopener noreferrer">
-                                View Detail <i class="fas fa-arrow-right"></i>
-                            </a>
-                        <% } %>
                     </div>
-                <% }); %>
+
+                    <!-- Education -->
+                    <div class="timeline-column">
+                        <h3 class="timeline-column-heading">
+                            <i class="fas fa-graduation-cap"></i> Education
+                        </h3>
+                        <div class="timeline-flow">
+                            <% data.resume.education.forEach(edu => { %>
+                                <div class="timeline-flow-item">
+                                    <div class="timeline-flow-marker"></div>
+                                    <div class="timeline-flow-card">
+                                        <div class="timeline-flow-header">
+                                            <h4 class="timeline-flow-title"><%= edu.title %></h4>
+                                            <span class="timeline-date-chip"><%= edu.date %></span>
+                                        </div>
+                                        <p class="timeline-flow-place">
+                                            <i class="fas fa-university"></i> <%= edu.place %>
+                                        </p>
+                                        <p class="timeline-flow-desc"><%= edu.desc %></p>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- ============================
-             CERTIFICATIONS SECTION
-             ============================ -->
-        <section id="certifications">
-            <div class="section-header gsap-bento">
-                <h2>Certifications</h2>
-                <p class="section-subtitle">Proof of continuous learning</p>
-            </div>
-            
-            <div class="bento-grid cert-bento">
-                <% data.certificates.forEach(cert => { %>
-                    <div class="bento-item cert-card gsap-bento">
-                        <div class="cert-img-container" data-img="<%= cert.img %>" onclick="openModal(this.getAttribute('data-img'))">
-                            <img src="<%= cert.img %>" alt="<%= cert.title %>" onerror="this.src='https://via.placeholder.com/400x250?text=No+Image'">
-                        </div>
-                        <div class="cert-info">
-                            <h3><%= cert.title %></h3>
-                            <span class="cert-issuer"><%= cert.issuer %></span>
-                            <div class="cert-actions">
-                                <button class="btn-icon" data-img="<%= cert.img %>" onclick="openModal(this.getAttribute('data-img'))" aria-label="View certificate">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <% if (cert.link) { %>
-                                    <a href="<%= cert.link %>" target="_blank" rel="noopener noreferrer" class="btn-icon" aria-label="Open certificate link">
-                                        <i class="fas fa-external-link-alt"></i>
-                                    </a>
-                                <% } %>
+        <!-- ====================================================================
+             5. CERTIFICATIONS SECTION (FULL-WIDTH)
+             ==================================================================== -->
+        <section id="certificates" class="section-full">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Certifications</h2>
+                    <p class="section-subtitle">Verified professional credentials and specialized masterclasses</p>
+                </div>
+
+                <div class="cert-showcase-grid">
+                    <% data.certificates.forEach(cert => { %>
+                        <div class="cert-showcase-card">
+                            <div class="cert-img-container" onclick="openLightbox('<%= cert.img %>')">
+                                <img src="<%= cert.img %>" alt="<%= cert.title %>" loading="lazy" onerror="this.src='https://via.placeholder.com/600x400?text=Certificate'">
+                                <div class="cert-img-hover-overlay">
+                                    <i class="fas fa-search-plus"></i> View Full
+                                </div>
+                            </div>
+                            <div class="cert-showcase-body">
+                                <h3 class="cert-showcase-title"><%= cert.title %></h3>
+                                <p class="cert-showcase-issuer">
+                                    <i class="fas fa-check-circle"></i> <%= cert.issuer %>
+                                </p>
+                                <div class="cert-showcase-actions">
+                                    <button type="button" class="btn-cert-icon" onclick="openLightbox('<%= cert.img %>')" title="Preview Certificate">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <% if (cert.link && cert.link !== '#') { %>
+                                        <a href="<%= cert.link %>" target="_blank" rel="noopener noreferrer" class="btn-cert-icon" title="Verify Credential">
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                    <% } %>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <% }); %>
+                    <% }); %>
+                </div>
             </div>
         </section>
 
-        <footer>
-            <div class="bento-item footer-content gsap-bento">
-                <div class="footer-logo">WIRAWAN.</div>
-                <p class="footer-tagline">Designed & Built with ❤️ using Bento Box Grid</p>
-                <div class="social-links">
-                    <a href="https://github.com/wiraputra" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/i-gede-wirawan-849651172/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="mailto:wirawanw62@gmail.com" class="social-link" aria-label="Email">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                </div>
-                <p class="footer-copy">&copy; 2026 I Gede Wirawan. All rights reserved.</p>
+    </main>
+
+    <!-- ====================================================================
+         FOOTER (FULL-WIDTH)
+         ==================================================================== -->
+    <footer class="footer-full">
+        <div class="footer-container">
+            <div class="footer-left">
+                <span class="footer-logo">GW.</span>
+                <p class="footer-copy">&copy; <%= new Date().getFullYear() %> <%= data.info.nama %>. All rights reserved.</p>
             </div>
-        </footer>
-    </div>
-
-    <!-- Script Data via Dataset -->
-    <div id="portfolio-data" data-roles="<%= JSON.stringify(data.info.role) %>" style="display: none;"></div>
-    
-    <!-- BACK TO TOP BUTTON -->
-    <button id="back-to-top" aria-label="Back to top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- MODAL (Certificate) -->
-    <div id="certModal" class="modal" onclick="closeModal()" style="display:none; position:fixed; z-index:2000; top:0; left:0; width:100%; height:100%; align-items:center; justify-content:center;">
-        <span style="position:fixed; top:20px; right:40px; font-size:40px; cursor:pointer; color: white;">&times;</span>
-        <img id="modalImage" class="modal-content" style="max-width:90%; max-height:90%; border-radius: 20px;">
-    </div>
-
-    <!-- PROJECT DETAIL MODAL -->
-    <div id="projectModal" class="modal" onclick="closeProjectModal()">
-        <div class="modal-card" onclick="event.stopPropagation()">
-            <span class="modal-close-btn" onclick="closeProjectModal()">&times;</span>
-            <div class="modal-img-container">
-                <img id="projectModalImg" src="" alt="Project Preview">
+            <div class="footer-links">
+                <a href="<%= data.info.github %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">GitHub</a>
+                <a href="<%= data.info.linkedin %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">LinkedIn</a>
+                <a href="mailto:<%= data.info.email %>" class="footer-nav-link">Email</a>
+                <a href="#home" class="footer-nav-link" id="btn-back-to-top">Back to Top &uarr;</a>
             </div>
+        </div>
+    </footer>
+
+    <!-- ====================================================================
+         MODALS (PROJECT DETAIL & LIGHTBOX)
+         ==================================================================== -->
+    <div id="project-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-dialog">
+            <button type="button" class="modal-close-button" onclick="closeProjectModal()" aria-label="Close dialog">&times;</button>
+            <img id="modal-project-img" class="modal-image-preview" src="" alt="Project Preview" style="display: none;">
             <div class="modal-body">
-                <h3 id="projectModalTitle"></h3>
-                <p id="projectModalDesc"></p>
-                <div id="projectModalTags" class="tags"></div>
+                <h3 id="modal-project-title" class="modal-title"></h3>
+                <p id="modal-project-desc" class="modal-text"></p>
+                <div id="modal-project-tags" class="project-showcase-tags"></div>
             </div>
         </div>
     </div>
 
-    <!-- Lenis Smooth Scroll -->
-    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+    <div id="lightbox-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" onclick="closeLightbox()">
+        <div class="lightbox-dialog" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close-button" onclick="closeLightbox()" aria-label="Close image">&times;</button>
+            <img id="lightbox-img" class="lightbox-img" src="" alt="Certificate Preview">
+        </div>
+    </div>
 
-    <!-- GSAP & ScrollTrigger -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Toast Notification -->
+    <div class="toast-container" aria-live="polite">
+        <div id="app-toast" class="toast">
+            <i class="fas fa-check-circle"></i>
+            <span id="toast-message">Copied to clipboard!</span>
+        </div>
+    </div>
 
-    <!-- Script JS -->
-    <script src="/script.js?v=23"></script>
+    <!-- Data Injection for Client Script -->
+    <script id="portfolio-client-data" type="application/json">
+        <%- JSON.stringify({ roles: data.info.role, email: data.info.email }) %>
+    </script>
+
+    <!-- Three.js 3D Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Client Script -->
+    <script src="/script.js?v=50"></script>
 </body>
 </html>
