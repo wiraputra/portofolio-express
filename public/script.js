@@ -598,6 +598,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // =========================================================================
+    // 7B. CERTIFICATIONS CATEGORY FILTER
+    // =========================================================================
+    const certFilterButtons = document.querySelectorAll('.cert-filter-pill');
+    const certCards = document.querySelectorAll('.cert-showcase-card');
+
+    certFilterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            certFilterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const filterVal = btn.getAttribute('data-filter');
+
+            certCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                if (filterVal === 'all' || category === filterVal) {
+                    card.style.display = 'flex';
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(8px)';
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 20);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // =========================================================================
     // 8. TOAST NOTIFICATION & COPY EMAIL
     // =========================================================================
     const toast = document.getElementById('app-toast');
@@ -641,23 +672,419 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.showToast = showToast;
 
+    // =========================================================================
+    // 9. DYNAMIC PROJECT SEARCH & FILTER SYSTEM
+    // =========================================================================
+    const searchInput = document.getElementById('project-search-input');
+    const searchClearBtn = document.getElementById('project-search-clear');
+    const filterPills = document.querySelectorAll('#projects-filter-pills .project-filter-pill');
+    const projectCards = document.querySelectorAll('#projects-grid .project-showcase-card');
+    const emptyState = document.getElementById('projects-empty-state');
+    let currentActiveTag = 'all';
+
+    function filterProjects() {
+        const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+        let visibleCount = 0;
+
+        projectCards.forEach(card => {
+            const title = card.getAttribute('data-title') || '';
+            const desc = card.getAttribute('data-desc') || '';
+            const tags = card.getAttribute('data-tags') || '';
+
+            // Tag check
+            const matchesTag = (currentActiveTag === 'all') || tags.includes(currentActiveTag.toLowerCase());
+
+            // Search query check (matches title, desc, or tags)
+            const matchesQuery = !query || 
+                title.includes(query) || 
+                desc.includes(query) || 
+                tags.includes(query);
+
+            if (matchesTag && matchesQuery) {
+                card.style.display = '';
+                card.classList.remove('is-hidden');
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+                card.classList.add('is-hidden');
+            }
+        });
+
+        if (emptyState) {
+            emptyState.style.display = (visibleCount === 0) ? 'flex' : 'none';
+        }
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            if (searchClearBtn) {
+                searchClearBtn.style.display = searchInput.value.length > 0 ? 'block' : 'none';
+            }
+            filterProjects();
+        });
+    }
+
+    if (searchClearBtn) {
+        searchClearBtn.addEventListener('click', () => {
+            if (searchInput) {
+                searchInput.value = '';
+                searchClearBtn.style.display = 'none';
+                searchInput.focus();
+            }
+            filterProjects();
+        });
+    }
+
+    filterPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+            filterPills.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            currentActiveTag = pill.getAttribute('data-tag') || 'all';
+            filterProjects();
+        });
+    });
+
+    window.resetProjectFilters = function() {
+        if (searchInput) {
+            searchInput.value = '';
+            if (searchClearBtn) searchClearBtn.style.display = 'none';
+        }
+        currentActiveTag = 'all';
+        filterPills.forEach(p => {
+            if (p.getAttribute('data-tag') === 'all') {
+                p.classList.add('active');
+            } else {
+                p.classList.remove('active');
+            }
+        });
+        filterProjects();
+    };
+
+    // =========================================================================
+    // 10. LIVE GITHUB ACTIVITY & STATS LOADER
+    // =========================================================================
+    const languageColors = {
+        'TypeScript': '#3178c6',
+        'JavaScript': '#f7df1e',
+        'Python': '#3572A5',
+        'Blade': '#f7523f',
+        'Dart': '#00B4AB',
+        'PHP': '#4F5D95',
+        'HTML': '#e34c26',
+        'CSS': '#563d7c',
+        'Vue': '#41b883',
+        'Code': '#52b788'
+    };
+
+    // =========================================================================
+    // SCROLL-TRIGGERED NUMBER COUNT-UP ANIMATION
+    // =========================================================================
+    function animateNumberCount(el, target, duration = 1400, startFrom = 0) {
+        if (!el || isNaN(target)) return;
+
+        el.classList.add('counting');
+        const start = startFrom;
+        const diff = target - start;
+        const startTime = performance.now();
+
+        function frame(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // easeOutQuart curve for smooth deceleration
+            const ease = 1 - Math.pow(1 - progress, 4);
+            const current = Math.round(start + diff * ease);
+
+            el.textContent = current;
+
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            } else {
+                el.textContent = target;
+                el.classList.remove('counting');
+                el.classList.add('count-completed');
+                setTimeout(() => el.classList.remove('count-completed'), 450);
+            }
+        }
+
+        requestAnimationFrame(frame);
+    }
+
+    let isMetricsInView = false;
+    let hasTriggeredMetricsCount = false;
+
+    function runMetricsCountUp() {
+        const elRepos = document.getElementById('gh-repos');
+        const elStars = document.getElementById('gh-stars');
+        const elFollowers = document.getElementById('gh-followers');
+        const elMemberYear = document.getElementById('gh-member-year');
+
+        if (elRepos && elRepos.dataset.target) {
+            animateNumberCount(elRepos, parseInt(elRepos.dataset.target, 10), 1300, 0);
+        }
+        if (elStars && elStars.dataset.target) {
+            animateNumberCount(elStars, parseInt(elStars.dataset.target, 10), 1100, 0);
+        }
+        if (elFollowers && elFollowers.dataset.target) {
+            animateNumberCount(elFollowers, parseInt(elFollowers.dataset.target, 10), 1200, 0);
+        }
+        if (elMemberYear && elMemberYear.dataset.target) {
+            const targetYear = parseInt(elMemberYear.dataset.target, 10);
+            animateNumberCount(elMemberYear, targetYear, 1600, Math.max(0, targetYear - 35));
+        }
+    }
+
+    // Observer to detect when user scrolls to GitHub Stats section
+    const metricsSection = document.getElementById('github-activity');
+    if (metricsSection && 'IntersectionObserver' in window) {
+        const metricsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    isMetricsInView = true;
+                    const elRepos = document.getElementById('gh-repos');
+                    if (elRepos && elRepos.dataset.target && !hasTriggeredMetricsCount) {
+                        hasTriggeredMetricsCount = true;
+                        runMetricsCountUp();
+                    }
+                } else {
+                    // Reset so scrolling back down triggers counting again
+                    hasTriggeredMetricsCount = false;
+                    isMetricsInView = false;
+                }
+            });
+        }, {
+            threshold: 0.25
+        });
+        metricsObserver.observe(metricsSection);
+    }
+
+    async function loadGitHubStats() {
+        const skeleton = document.getElementById('github-skeleton');
+        const liveContent = document.getElementById('github-live-content');
+        if (!liveContent) return;
+
+        try {
+            const res = await fetch('/api/github-stats');
+            if (!res.ok) throw new Error('API response not ok');
+            const data = await res.json();
+
+            if (!data.success) throw new Error('API returned failure');
+
+            const profile = data.profile || {};
+            const topLanguages = data.topLanguages || [];
+            const recentRepos = data.recentRepos || [];
+
+            // Populate Overview Metrics with target data attributes
+            const elRepos = document.getElementById('gh-repos');
+            const elStars = document.getElementById('gh-stars');
+            const elFollowers = document.getElementById('gh-followers');
+            const elMemberYear = document.getElementById('gh-member-year');
+
+            const valRepos = String(profile.publicRepos ?? 12);
+            const valStars = String(profile.totalStars ?? 6);
+            const valFollowers = String(profile.followers ?? 8);
+            const valYear = String(profile.createdAt ? new Date(profile.createdAt).getFullYear() : 2018);
+
+            if (elRepos) elRepos.dataset.target = valRepos;
+            if (elStars) elStars.dataset.target = valStars;
+            if (elFollowers) elFollowers.dataset.target = valFollowers;
+            if (elMemberYear) elMemberYear.dataset.target = valYear;
+
+            // If section is already visible in viewport, trigger counting immediately
+            if (isMetricsInView && !hasTriggeredMetricsCount) {
+                hasTriggeredMetricsCount = true;
+                runMetricsCountUp();
+            } else if (!isMetricsInView) {
+                // Initialize to starting numbers before scrolled into view
+                if (elRepos) elRepos.textContent = '0';
+                if (elStars) elStars.textContent = '0';
+                if (elFollowers) elFollowers.textContent = '0';
+                if (elMemberYear) elMemberYear.textContent = String(Math.max(0, parseInt(valYear, 10) - 35));
+            }
+
+            // Populate Profile Card
+            const elAvatar = document.getElementById('gh-avatar');
+            const elName = document.getElementById('gh-name');
+            const elHandle = document.getElementById('gh-handle');
+            const elBio = document.getElementById('gh-bio');
+
+            if (elAvatar && profile.avatarUrl) elAvatar.src = profile.avatarUrl;
+            if (elName && profile.name) elName.textContent = profile.name;
+            if (elHandle && profile.username) elHandle.innerHTML = `@${profile.username} <i class="fas fa-external-link-alt"></i>`;
+            if (elBio && profile.bio) elBio.textContent = profile.bio;
+
+            // Cache badge indicator
+            const cacheBadge = document.getElementById('gh-cache-badge');
+            if (cacheBadge) {
+                cacheBadge.textContent = data.cached ? 'Cached (Fast)' : 'Live API';
+            }
+
+            // Populate Top Languages Stacked Bar & Legend
+            const progressContainer = document.getElementById('gh-lang-progress');
+            const legendContainer = document.getElementById('gh-lang-legend');
+
+            if (progressContainer && legendContainer) {
+                progressContainer.innerHTML = '';
+                legendContainer.innerHTML = '';
+
+                topLanguages.forEach(item => {
+                    const color = languageColors[item.language] || '#2d6a4f';
+
+                    // Stacked bar segment
+                    const segment = document.createElement('div');
+                    segment.className = 'lang-bar-segment';
+                    segment.style.width = `${item.percentage}%`;
+                    segment.style.backgroundColor = color;
+                    segment.title = `${item.language}: ${item.percentage}%`;
+                    progressContainer.appendChild(segment);
+
+                    // Legend item
+                    const legend = document.createElement('div');
+                    legend.className = 'lang-legend-item';
+                    legend.innerHTML = `
+                        <span class="lang-color-dot" style="background-color: ${color}"></span>
+                        <span class="lang-name">${item.language}</span>
+                        <span class="lang-percent">${item.percentage}%</span>
+                    `;
+                    legendContainer.appendChild(legend);
+                });
+            }
+
+            // Populate Recent Repositories Grid
+            const reposContainer = document.getElementById('gh-recent-repos');
+            if (reposContainer && recentRepos.length > 0) {
+                reposContainer.innerHTML = '';
+                recentRepos.forEach(repo => {
+                    const langColor = languageColors[repo.language] || '#52b788';
+                    const card = document.createElement('a');
+                    card.href = repo.url;
+                    card.target = '_blank';
+                    card.rel = 'noopener noreferrer';
+                    card.className = 'github-repo-card';
+
+                    const updatedDate = repo.updatedAt ? new Date(repo.updatedAt).toLocaleDateString('en-US', {
+                        month: 'short',
+                        year: 'numeric'
+                    }) : '';
+
+                    card.innerHTML = `
+                        <div class="repo-card-top">
+                            <i class="fas fa-book-bookmark repo-book-icon"></i>
+                            <span class="repo-name">${escapeHtml(repo.name)}</span>
+                            <i class="fas fa-external-link-alt repo-ext-icon"></i>
+                        </div>
+                        <p class="repo-description">${escapeHtml(repo.description)}</p>
+                        <div class="repo-card-meta">
+                            <span class="repo-lang-pill">
+                                <span class="repo-lang-dot" style="background-color: ${langColor};"></span>
+                                ${escapeHtml(repo.language)}
+                            </span>
+                            <div class="repo-stat-badges">
+                                <span class="repo-stat-chip" title="Stars"><i class="fas fa-star"></i> ${repo.stars}</span>
+                                <span class="repo-stat-chip" title="Forks"><i class="fas fa-code-fork"></i> ${repo.forks}</span>
+                            </div>
+                        </div>
+                    `;
+                    reposContainer.appendChild(card);
+                });
+            }
+
+            // Smooth transition from skeleton to live content
+            if (skeleton) skeleton.style.display = 'none';
+            liveContent.style.display = 'block';
+            liveContent.classList.add('fade-in-ready');
+
+        } catch (err) {
+            console.warn('Could not load live GitHub stats:', err);
+            const elRepos = document.getElementById('gh-repos');
+            const elStars = document.getElementById('gh-stars');
+            const elFollowers = document.getElementById('gh-followers');
+            const elMemberYear = document.getElementById('gh-member-year');
+
+            if (elRepos) elRepos.dataset.target = '12';
+            if (elStars) elStars.dataset.target = '6';
+            if (elFollowers) elFollowers.dataset.target = '8';
+            if (elMemberYear) elMemberYear.dataset.target = '2018';
+
+            if (skeleton) skeleton.style.display = 'none';
+            liveContent.style.display = 'block';
+
+            if (isMetricsInView && !hasTriggeredMetricsCount) {
+                hasTriggeredMetricsCount = true;
+                runMetricsCountUp();
+            } else if (!isMetricsInView) {
+                if (elRepos) elRepos.textContent = '0';
+                if (elStars) elStars.textContent = '0';
+                if (elFollowers) elFollowers.textContent = '0';
+                if (elMemberYear) elMemberYear.textContent = '1983';
+            }
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    // Call stats loader
+    loadGitHubStats();
+
 });
 
 // =========================================================================
-// 9. GLOBAL MODAL HANDLERS
+// 11. GLOBAL MODAL HANDLERS (PROJECT DETAILS, MOCKUP SWITCHER, LIGHTBOX, CV)
 // =========================================================================
+function switchMockupDevice(mode) {
+    const viewport = document.getElementById('mockup-viewport');
+    const tabDesktop = document.getElementById('mockup-tab-desktop');
+    const tabMobile = document.getElementById('mockup-tab-mobile');
+    const headerDesktop = document.getElementById('mockup-desktop-header');
+    const headerMobile = document.getElementById('mockup-mobile-header');
+
+    if (!viewport) return;
+
+    if (mode === 'mobile') {
+        viewport.classList.remove('desktop-frame');
+        viewport.classList.add('mobile-frame');
+
+        if (tabDesktop) tabDesktop.classList.remove('active');
+        if (tabMobile) tabMobile.classList.add('active');
+
+        if (headerDesktop) headerDesktop.style.display = 'none';
+        if (headerMobile) headerMobile.style.display = 'flex';
+    } else {
+        viewport.classList.remove('mobile-frame');
+        viewport.classList.add('desktop-frame');
+
+        if (tabDesktop) tabDesktop.classList.add('active');
+        if (tabMobile) tabMobile.classList.remove('active');
+
+        if (headerDesktop) headerDesktop.style.display = 'flex';
+        if (headerMobile) headerMobile.style.display = 'none';
+    }
+}
+
 function openProjectModal(btn) {
     const modal = document.getElementById('project-modal');
     const titleEl = document.getElementById('modal-project-title');
     const descEl = document.getElementById('modal-project-desc');
     const imgEl = document.getElementById('modal-project-img');
     const tagsEl = document.getElementById('modal-project-tags');
+    const urlEl = document.getElementById('mockup-address-url');
+    const linksEl = document.getElementById('modal-project-links');
 
     if (!modal) return;
 
     const title = btn.getAttribute('data-judul') || '';
     const desc = btn.getAttribute('data-desc') || '';
     const img = btn.getAttribute('data-img') || '';
+    const demo = btn.getAttribute('data-demo') || '';
+    const link = btn.getAttribute('data-link') || '';
+
     let tags = [];
     try {
         tags = JSON.parse(btn.getAttribute('data-tags') || '[]');
@@ -665,6 +1092,40 @@ function openProjectModal(btn) {
 
     titleEl.textContent = title;
     descEl.textContent = desc;
+
+    // Set mockup address bar URL
+    if (urlEl) {
+        if (demo) {
+            urlEl.textContent = demo.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        } else if (link) {
+            urlEl.textContent = link.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        } else {
+            urlEl.textContent = `${title.toLowerCase().replace(/\s+/g, '-')}.app`;
+        }
+    }
+
+    // Set external action buttons in modal
+    if (linksEl) {
+        linksEl.innerHTML = '';
+        if (demo) {
+            const demoBtn = document.createElement('a');
+            demoBtn.href = demo;
+            demoBtn.target = '_blank';
+            demoBtn.rel = 'noopener noreferrer';
+            demoBtn.className = 'btn-pill-cta modal-action-btn';
+            demoBtn.innerHTML = '<i class="fas fa-globe"></i> Live Demo';
+            linksEl.appendChild(demoBtn);
+        }
+        if (link) {
+            const repoBtn = document.createElement('a');
+            repoBtn.href = link;
+            repoBtn.target = '_blank';
+            repoBtn.rel = 'noopener noreferrer';
+            repoBtn.className = 'btn-pill-secondary modal-action-btn';
+            repoBtn.innerHTML = '<i class="fab fa-github"></i> Repository';
+            linksEl.appendChild(repoBtn);
+        }
+    }
 
     if (img) {
         imgEl.src = img;
@@ -681,6 +1142,9 @@ function openProjectModal(btn) {
         tagsEl.appendChild(pill);
     });
 
+    // Always reset to desktop mockup view initially
+    switchMockupDevice('desktop');
+
     modal.classList.add('is-active');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -695,6 +1159,7 @@ function closeProjectModal() {
     }
 }
 
+// Lightbox Modal
 function openLightbox(imageSrc) {
     const lightbox = document.getElementById('lightbox-modal');
     const lightboxImg = document.getElementById('lightbox-img');
@@ -716,9 +1181,47 @@ function closeLightbox() {
     }
 }
 
+// In-App CV Quick View Modal
+function openCvModal() {
+    const cvModal = document.getElementById('cv-modal');
+    const cvIframe = document.getElementById('cv-iframe');
+    const fallbackMsg = document.getElementById('cv-fallback-msg');
+
+    if (!cvModal) return;
+
+    if (cvIframe) {
+        // Embed PDF with no toolbar for clean display
+        cvIframe.src = '/cv.pdf#toolbar=0&navpanes=0';
+        cvIframe.style.display = 'block';
+        if (fallbackMsg) fallbackMsg.style.display = 'none';
+    }
+
+    cvModal.classList.add('is-active');
+    cvModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCvModal() {
+    const cvModal = document.getElementById('cv-modal');
+    const cvIframe = document.getElementById('cv-iframe');
+
+    if (cvModal) {
+        cvModal.classList.remove('is-active');
+        cvModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+
+    if (cvIframe) {
+        // Free memory when closed
+        cvIframe.src = '';
+    }
+}
+
+// Global Keyboard Handler (Escape closes active modals)
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeProjectModal();
         closeLightbox();
+        closeCvModal();
     }
 });

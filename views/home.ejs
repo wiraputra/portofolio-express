@@ -51,6 +51,7 @@
                 <li><a href="#home" class="nav-link active" data-section="home">Home</a></li>
                 <li><a href="#skills" class="nav-link" data-section="skills">Skills</a></li>
                 <li><a href="#projects" class="nav-link" data-section="projects">Projects</a></li>
+                <li><a href="#github-activity" class="nav-link" data-section="github-activity">Activity</a></li>
                 <li><a href="#experience" class="nav-link" data-section="experience">Experience</a></li>
                 <li><a href="#certificates" class="nav-link" data-section="certificates">Certificates</a></li>
                 <li><a href="/games" class="nav-link nav-link-games" title="Play Interactive Minigames"><i class="fas fa-gamepad"></i> Games</a></li>
@@ -111,6 +112,7 @@
             <li><a href="#home" class="mobile-link">Home</a></li>
             <li><a href="#skills" class="mobile-link">Skills</a></li>
             <li><a href="#projects" class="mobile-link">Projects</a></li>
+            <li><a href="#github-activity" class="mobile-link">Activity</a></li>
             <li><a href="#experience" class="mobile-link">Experience</a></li>
             <li><a href="#certificates" class="mobile-link">Certificates</a></li>
             <li><a href="/games" class="mobile-link"><i class="fas fa-gamepad"></i> Minigames</a></li>
@@ -144,8 +146,11 @@
                     </p>
 
                     <div class="hero-actions-row">
-                        <a href="<%= data.info.cvUrl %>" download="<%= data.info.cvFilename %>" target="_blank" rel="noopener noreferrer" class="btn-pill-cta">
-                            <i class="fas fa-arrow-down"></i> Download CV
+                        <button type="button" class="btn-pill-cta btn-cv-preview-trigger" id="btn-preview-cv" onclick="openCvModal()">
+                            <i class="fas fa-file-pdf"></i> Quick Preview CV
+                        </button>
+                        <a href="<%= data.info.cvUrl %>" download="<%= data.info.cvFilename %>" target="_blank" rel="noopener noreferrer" class="btn-pill-secondary">
+                            <i class="fas fa-download"></i> Download
                         </a>
 
                         <div class="hero-socials">
@@ -188,25 +193,76 @@
         <section id="skills" class="section-full">
             <div class="section-container">
                 <div class="section-header">
-                    <h2 class="section-title">My Skills</h2>
-                    <p class="section-subtitle">Technologies and tools I work with to build robust software</p>
+                    <div class="section-badge-pill">
+                        <i class="fas fa-code-branch"></i> Technical Stack
+                    </div>
+                    <h2 class="section-title">My Skills &amp; Stack</h2>
+                    <p class="section-subtitle">Structured overview of modern technologies, libraries, and frameworks I use to engineer robust applications</p>
                 </div>
 
-                <!-- Category Filters -->
-                <div class="skills-filter-nav">
-                    <button type="button" class="filter-pill active" data-filter="all">All Skills (<%= data.skills.length %>)</button>
-                    <button type="button" class="filter-pill" data-filter="Frontend">Frontend</button>
-                    <button type="button" class="filter-pill" data-filter="Backend">Backend</button>
-                    <button type="button" class="filter-pill" data-filter="Mobile & Tools">Mobile &amp; Tools</button>
-                </div>
+                <% 
+                    const frontendSkills = data.skills.filter(s => s.category === 'Frontend');
+                    const backendSkills = data.skills.filter(s => s.category === 'Backend');
+                    const toolsSkills = data.skills.filter(s => s.category === 'Mobile & Tools');
 
-                <!-- Skills Grid -->
-                <div class="skills-card-grid" id="skills-grid">
-                    <% data.skills.forEach(skill => { %>
-                        <div class="skill-pill-card" data-category="<%= skill.category %>">
-                            <i class="<%= skill.icon %> skill-pill-icon" data-color="<%= skill.color %>"></i>
-                            <span class="skill-pill-name"><%= skill.nama %></span>
-                            <span class="skill-pill-badge"><%= skill.category %></span>
+                    const skillCategories = [
+                        {
+                            id: 'frontend',
+                            title: 'Frontend Development',
+                            subtitle: 'Modern UI & Reactive Systems',
+                            icon: 'fas fa-desktop',
+                            desc: 'Crafting responsive, high-performance interfaces, component-driven layouts, and seamless state flows.',
+                            badge: frontendSkills.length + ' Technologies',
+                            skills: frontendSkills
+                        },
+                        {
+                            id: 'backend',
+                            title: 'Backend & Database',
+                            subtitle: 'Scalable APIs & Data Integrity',
+                            icon: 'fas fa-server',
+                            desc: 'Engineering robust server architectures, secure RESTful APIs, authentication workflows, and relational databases.',
+                            badge: backendSkills.length + ' Technologies',
+                            skills: backendSkills
+                        },
+                        {
+                            id: 'tools',
+                            title: 'Mobile & Workflow Tools',
+                            subtitle: 'Cross-Platform & Developer Experience',
+                            icon: 'fas fa-toolbox',
+                            desc: 'Building cross-platform mobile apps, interactive UI/UX prototypes, and optimized engineering environments.',
+                            badge: toolsSkills.length + ' Technologies',
+                            skills: toolsSkills
+                        }
+                    ];
+                %>
+
+                <!-- 3 Categorized Bento Cards -->
+                <div class="skills-categories-grid">
+                    <% skillCategories.forEach(cat => { %>
+                        <div class="skill-category-card" id="skill-cat-<%= cat.id %>">
+                            <div class="skill-category-header">
+                                <div class="category-icon-box">
+                                    <i class="<%= cat.icon %>"></i>
+                                </div>
+                                <div class="category-title-wrap">
+                                    <h3 class="category-title"><%= cat.title %></h3>
+                                    <span class="category-focus-tag"><%= cat.subtitle %></span>
+                                </div>
+                                <span class="category-count-badge"><%= cat.badge %></span>
+                            </div>
+
+                            <p class="category-desc"><%= cat.desc %></p>
+
+                            <div class="category-divider"></div>
+
+                            <div class="category-skills-tags">
+                                <% cat.skills.forEach(skill => { %>
+                                    <div class="skill-tag-item" title="<%= skill.nama %> (<%= skill.category %>)">
+                                        <i class="<%= skill.icon %> skill-tag-icon" style="color: <%= skill.color %>;"></i>
+                                        <span class="skill-tag-name"><%= skill.nama %></span>
+                                    </div>
+                                <% }); %>
+                            </div>
                         </div>
                     <% }); %>
                 </div>
@@ -219,73 +275,218 @@
         <section id="projects" class="section-full">
             <div class="section-container">
                 <div class="section-header">
+                    <div class="section-badge-pill">
+                        <i class="fas fa-folder-open"></i> Portfolio Archive
+                    </div>
                     <h2 class="section-title">Featured Projects</h2>
-                    <p class="section-subtitle">Selected platforms and applications I've engineered</p>
+                    <p class="section-subtitle">Click the interactive project vault below to explore live applications, architectures, and demos</p>
                 </div>
 
-                <div class="projects-card-grid">
-                    <% data.projects.forEach(project => { %>
-                        <article class="project-showcase-card <%= project.featured ? 'is-featured' : '' %> <%= project.img ? 'has-media' : '' %>">
-                            <% if (project.img) { %>
-                                <div class="project-card-media" onclick="openLightbox('<%= project.img %>')" role="button" tabindex="0" title="Click to view full image">
-                                    <img src="<%= project.img %>" alt="<%= project.judul %> Preview" class="project-card-img" loading="lazy">
-                                    <div class="project-media-overlay">
-                                        <span class="media-zoom-pill"><i class="fas fa-search-plus"></i> View Full Image</span>
-                                    </div>
-                                    <% if (project.featured) { %>
-                                        <div class="featured-ribbon-badge">
-                                            <i class="fas fa-star"></i> Featured Platform
+                <!-- Interactive Animated Project Folder Portal Card -->
+                <div class="project-folder-portal-wrapper">
+                    <a href="/projects" class="project-folder-card" id="project-folder-portal" aria-label="Open Project Gallery">
+                        
+                        <!-- Folder 3D Stage Area -->
+                        <div class="folder-3d-stage">
+                            <!-- Folder Back Flap / Tab -->
+                            <div class="folder-back-panel">
+                                <div class="folder-tab-handle">
+                                    <i class="fas fa-folder"></i>
+                                    <span>~/projects-vault/</span>
+                                </div>
+                                <span class="folder-status-indicator"><span class="pulse-dot"></span> <%= data.projects.length %> Projects</span>
+                            </div>
+
+                            <!-- Floating Project Preview Cards (Emerge and fan out from folder on hover) -->
+                            <div class="folder-preview-stack">
+                                <!-- Card 1: Genuine Solutions (Real screenshot) -->
+                                <div class="stack-preview-item item-1">
+                                    <div class="preview-thumb-wrap">
+                                        <img src="/images/genuine-solutions-hero.png" alt="Genuine Solutions" class="stack-preview-img">
+                                        <div class="preview-card-glass">
+                                            <span class="preview-mini-title">Genuine Solutions</span>
+                                            <span class="preview-mini-tag">Laravel &bull; React</span>
                                         </div>
-                                    <% } %>
-                                </div>
-                            <% } else if (project.featured) { %>
-                                <div class="featured-ribbon">
-                                    <i class="fas fa-star"></i> Featured Platform
-                                </div>
-                            <% } %>
-
-                            <div class="project-showcase-content">
-                                <h3 class="project-showcase-title"><%= project.judul %></h3>
-                                <p class="project-showcase-desc"><%= project.deskripsi %></p>
-
-                                <div class="project-showcase-tags">
-                                    <% project.tags.forEach(tag => { %>
-                                        <span class="tag-chip"><%= tag %></span>
-                                    <% }); %>
+                                    </div>
                                 </div>
 
-                                <div class="project-showcase-actions">
-                                    <% if (project.detailDesc) { %>
-                                        <button 
-                                            type="button" 
-                                            class="btn-text-link" 
-                                            data-judul="<%= project.judul %>"
-                                            data-desc="<%= project.detailDesc %>"
-                                            data-img="<%= project.detailImg || project.img || '' %>"
-                                            data-tags='<%= JSON.stringify(project.tags) %>'
-                                            onclick="openProjectModal(this)"
-                                        >
-                                            View Details <i class="fas fa-arrow-right"></i>
-                                        </button>
-                                    <% } %>
+                                <!-- Card 2: Building Asset Management (3D / Analytics) -->
+                                <div class="stack-preview-item item-2">
+                                    <div class="preview-thumb-wrap preview-bg-3d">
+                                        <div class="preview-graphic-mesh">
+                                            <i class="fas fa-cube preview-center-icon"></i>
+                                        </div>
+                                        <div class="preview-card-glass">
+                                            <span class="preview-mini-title">Asset Management 3D</span>
+                                            <span class="preview-mini-tag">Three.js &bull; Analytics</span>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                    <div class="project-links-group">
-                                        <% if (project.demo) { %>
-                                            <a href="<%= project.demo %>" target="_blank" rel="noopener noreferrer" class="btn-text-link demo-link">
-                                                <i class="fas fa-globe"></i> Live Project <i class="fas fa-external-link-alt"></i>
-                                            </a>
-                                        <% } %>
+                                <!-- Card 3: Kenangan Senja (POS Coffee App) -->
+                                <div class="stack-preview-item item-3">
+                                    <div class="preview-thumb-wrap preview-bg-coffee">
+                                        <div class="preview-graphic-mesh">
+                                            <i class="fas fa-mug-hot preview-center-icon"></i>
+                                        </div>
+                                        <div class="preview-card-glass">
+                                            <span class="preview-mini-title">Kenangan Senja</span>
+                                            <span class="preview-mini-tag">PHP &bull; Blade &bull; MySQL</span>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                        <% if (project.link) { %>
-                                            <a href="<%= project.link %>" target="_blank" rel="noopener noreferrer" class="btn-text-link repo-link">
-                                                <i class="fab fa-github"></i> Repository <i class="fas fa-external-link-alt"></i>
-                                            </a>
-                                        <% } %>
+                                <!-- Card 4: Log Gates (PKL Internship Logbook) -->
+                                <div class="stack-preview-item item-4">
+                                    <div class="preview-thumb-wrap preview-bg-next">
+                                        <div class="preview-graphic-mesh">
+                                            <i class="fas fa-clipboard-check preview-center-icon"></i>
+                                        </div>
+                                        <div class="preview-card-glass">
+                                            <span class="preview-mini-title">Log Gates App</span>
+                                            <span class="preview-mini-tag">Next.js &bull; Vercel</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 5: Campus Info App (Mobile Flutter) -->
+                                <div class="stack-preview-item item-5">
+                                    <div class="preview-thumb-wrap preview-bg-mobile">
+                                        <div class="preview-graphic-mesh">
+                                            <i class="fas fa-mobile-screen preview-center-icon"></i>
+                                        </div>
+                                        <div class="preview-card-glass">
+                                            <span class="preview-mini-title">Campus Mobile</span>
+                                            <span class="preview-mini-tag">Flutter &bull; Dart</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </article>
-                    <% }); %>
+
+                            <!-- Folder Front Pocket (Cards slide out from behind this) -->
+                            <div class="folder-front-pocket">
+                                <div class="folder-pocket-texture"></div>
+                                <div class="folder-clasp">
+                                    <div class="folder-clasp-badge">
+                                        <i class="fas fa-sparkles"></i>
+                                        <span>Hover to peek inside &bull; Click to open</span>
+                                    </div>
+                                </div>
+                                <div class="folder-pocket-meta">
+                                    <span class="folder-pocket-title">FULLSTACK_ARCHIVE</span>
+                                    <span class="folder-pocket-count"><i class="fas fa-layer-group"></i> <%= data.projects.length %> Production Apps</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Content & Action Callout -->
+                        <div class="folder-card-info">
+                            <div class="folder-info-text">
+                                <h3 class="folder-headline">Explore All Engineering Projects</h3>
+                                <p class="folder-subtext">
+                                    Hover over the folder above to peek inside, or click anywhere on this card to open the dedicated gallery with live demos, full architectures, and responsive device mockups.
+                                </p>
+                            </div>
+                            <div class="folder-cta-action">
+                                <span class="btn-pill-cta folder-cta-btn">
+                                    Open Project Gallery <i class="fas fa-arrow-right"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====================================================================
+             LIVE GITHUB ACTIVITY & METRICS SECTION (FULL-WIDTH)
+             ==================================================================== -->
+        <section id="github-activity" class="section-full">
+            <div class="section-container">
+                <div class="section-header">
+                    <div class="section-badge-pill">
+                        <i class="fab fa-github"></i> Real-time Open Source Footprint
+                    </div>
+                    <h2 class="section-title">GitHub Activity &amp; Live Stats</h2>
+                    <p class="section-subtitle">Real-time repository statistics, top languages, and open source commits</p>
+                </div>
+
+                <div class="github-stats-container" id="github-stats-container">
+                    <!-- Skeleton Loader State -->
+                    <div class="github-skeleton-grid" id="github-skeleton">
+                        <div class="github-card-skeleton stat-skeleton"></div>
+                        <div class="github-card-skeleton stat-skeleton"></div>
+                        <div class="github-card-skeleton stat-skeleton"></div>
+                        <div class="github-card-skeleton stat-skeleton"></div>
+                    </div>
+
+                    <!-- Dynamic Render Container -->
+                    <div id="github-live-content" style="display: none;">
+                        <!-- Overview Metric Cards -->
+                        <div class="github-metrics-grid">
+                            <div class="github-metric-card">
+                                <div class="metric-icon-wrap"><i class="fas fa-code-branch"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-value" id="gh-repos">-</span>
+                                    <span class="metric-label">Public Repos</span>
+                                </div>
+                            </div>
+                            <div class="github-metric-card">
+                                <div class="metric-icon-wrap"><i class="fas fa-star"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-value" id="gh-stars">-</span>
+                                    <span class="metric-label">Stars Earned</span>
+                                </div>
+                            </div>
+                            <div class="github-metric-card">
+                                <div class="metric-icon-wrap"><i class="fas fa-users"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-value" id="gh-followers">-</span>
+                                    <span class="metric-label">Followers</span>
+                                </div>
+                            </div>
+                            <div class="github-metric-card">
+                                <div class="metric-icon-wrap"><i class="fas fa-calendar-alt"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-value" id="gh-member-year">-</span>
+                                    <span class="metric-label">Active Since</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Languages & Live Profile Showcase -->
+                        <div class="github-showcase-grid">
+                            <!-- Languages Breakdown Card -->
+                            <div class="github-panel-card languages-panel">
+                                <div class="panel-card-header">
+                                    <h4 class="panel-card-title"><i class="fas fa-code"></i> Top Code Languages</h4>
+                                    <span class="panel-badge" id="gh-cache-badge">Live API</span>
+                                </div>
+                                <div class="languages-progress-stacked" id="gh-lang-progress"></div>
+                                <div class="languages-legend-grid" id="gh-lang-legend"></div>
+                            </div>
+
+                            <!-- Live Profile & Quick CTA Card -->
+                            <div class="github-panel-card github-profile-highlight">
+                                <div class="gh-profile-header">
+                                    <img id="gh-avatar" src="https://avatars.githubusercontent.com/u/36322459?v=4" alt="GitHub Avatar" class="gh-avatar-img">
+                                    <div class="gh-profile-meta">
+                                        <h4 class="gh-name" id="gh-name">I Gede Wirawan</h4>
+                                        <a href="https://github.com/wiraputra" target="_blank" rel="noopener noreferrer" class="gh-handle" id="gh-handle">
+                                            @wiraputra <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <p class="gh-bio" id="gh-bio">Software Engineer &amp; Cyber Security Enthusiast</p>
+                                <div class="gh-cta-actions">
+                                    <a href="https://github.com/wiraputra?tab=repositories" target="_blank" rel="noopener noreferrer" class="btn-pill-cta gh-visit-btn">
+                                        <i class="fab fa-github"></i> Explore All Repositories
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -358,36 +559,69 @@
         <section id="certificates" class="section-full">
             <div class="section-container">
                 <div class="section-header">
-                    <h2 class="section-title">Certifications</h2>
-                    <p class="section-subtitle">Verified professional credentials and specialized masterclasses</p>
+                    <div class="section-badge-pill">
+                        <i class="fas fa-award"></i> Verified Credentials
+                    </div>
+                    <h2 class="section-title">Certifications &amp; Credentials</h2>
+                    <p class="section-subtitle">Verified professional qualifications, cybersecurity competencies, and technical masterclasses</p>
                 </div>
 
-                <div class="cert-showcase-grid">
+                <!-- Category Filters for Certifications -->
+                <div class="cert-filter-nav">
+                    <button type="button" class="cert-filter-pill active" data-filter="all">All Credentials (<%= data.certificates.length %>)</button>
+                    <button type="button" class="cert-filter-pill" data-filter="Cyber Security"><i class="fas fa-shield-alt"></i> Cyber Security</button>
+                    <button type="button" class="cert-filter-pill" data-filter="Web & Fullstack"><i class="fas fa-laptop-code"></i> Web &amp; Fullstack</button>
+                    <button type="button" class="cert-filter-pill" data-filter="AI & Cloud"><i class="fas fa-brain"></i> AI &amp; Cloud</button>
+                </div>
+
+                <div class="cert-showcase-grid" id="cert-grid">
                     <% data.certificates.forEach(cert => { %>
-                        <div class="cert-showcase-card">
-                            <div class="cert-img-container" onclick="openLightbox('<%= cert.img %>')">
-                                <img src="<%= cert.img %>" alt="<%= cert.title %>" loading="lazy" onerror="this.src='https://via.placeholder.com/600x400?text=Certificate'">
-                                <div class="cert-img-hover-overlay">
-                                    <i class="fas fa-search-plus"></i> View Full
+                        <article class="cert-showcase-card" data-category="<%= cert.category %>">
+                            <!-- Certificate Media Frame -->
+                            <div class="cert-card-media" onclick="openLightbox('<%= cert.img %>')" role="button" tabindex="0" title="Click to view full certificate">
+                                <img src="<%= cert.img %>" alt="<%= cert.title %>" class="cert-card-img" loading="lazy" onerror="this.src='https://via.placeholder.com/600x400?text=Certificate'">
+                                <div class="cert-media-overlay">
+                                    <span class="media-zoom-pill"><i class="fas fa-search-plus"></i> View Certificate</span>
+                                </div>
+                                <div class="cert-category-badge">
+                                    <i class="<%= cert.categoryIcon || 'fas fa-award' %>"></i> <%= cert.category %>
                                 </div>
                             </div>
-                            <div class="cert-showcase-body">
+
+                            <!-- Certificate Body -->
+                            <div class="cert-showcase-content">
+                                <div class="cert-issuer-row">
+                                    <span class="cert-issuer-badge">
+                                        <i class="fas fa-check-circle"></i> <%= cert.issuer %>
+                                    </span>
+                                </div>
+
                                 <h3 class="cert-showcase-title"><%= cert.title %></h3>
-                                <p class="cert-showcase-issuer">
-                                    <i class="fas fa-check-circle"></i> <%= cert.issuer %>
-                                </p>
+
+                                <p class="cert-showcase-desc"><%= cert.desc %></p>
+
+                                <div class="cert-showcase-tags">
+                                    <% (cert.tags || []).forEach(tag => { %>
+                                        <span class="tag-chip"><%= tag %></span>
+                                    <% }); %>
+                                </div>
+
                                 <div class="cert-showcase-actions">
-                                    <button type="button" class="btn-cert-icon" onclick="openLightbox('<%= cert.img %>')" title="Preview Certificate">
-                                        <i class="fas fa-eye"></i>
+                                    <button type="button" class="btn-cert-action btn-preview-cert" onclick="openLightbox('<%= cert.img %>')" title="Quick Preview">
+                                        <i class="fas fa-eye"></i> Preview
                                     </button>
                                     <% if (cert.link && cert.link !== '#') { %>
-                                        <a href="<%= cert.link %>" target="_blank" rel="noopener noreferrer" class="btn-cert-icon" title="Verify Credential">
-                                            <i class="fas fa-external-link-alt"></i>
+                                        <a href="<%= cert.link %>" target="_blank" rel="noopener noreferrer" class="btn-cert-action btn-verify-cert" title="Verify Online Credential">
+                                            <span>Verify</span> <i class="fas fa-external-link-alt"></i>
                                         </a>
+                                    <% } else { %>
+                                        <span class="cert-offline-badge" title="Official Institutional Certificate">
+                                            <i class="fas fa-certificate"></i> Verified Issued
+                                        </span>
                                     <% } %>
                                 </div>
                             </div>
-                        </div>
+                        </article>
                     <% }); %>
                 </div>
             </div>
@@ -417,11 +651,62 @@
          MODALS (PROJECT DETAIL & LIGHTBOX)
          ==================================================================== -->
     <div id="project-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-mockup">
             <button type="button" class="modal-close-button" onclick="closeProjectModal()" aria-label="Close dialog">&times;</button>
-            <img id="modal-project-img" class="modal-image-preview" src="" alt="Project Preview" style="display: none;">
+            
+            <!-- Device Frame Mockup Switcher Toolbar -->
+            <div class="mockup-switch-toolbar">
+                <span class="mockup-switch-label"><i class="fas fa-layer-group"></i> Preview Mode:</span>
+                <div class="mockup-switch-tabs">
+                    <button type="button" class="mockup-tab-btn active" id="mockup-tab-desktop" onclick="switchMockupDevice('desktop')">
+                        <i class="fas fa-laptop"></i> Desktop Frame
+                    </button>
+                    <button type="button" class="mockup-tab-btn" id="mockup-tab-mobile" onclick="switchMockupDevice('mobile')">
+                        <i class="fas fa-mobile-alt"></i> Mobile Frame
+                    </button>
+                </div>
+            </div>
+
+            <!-- Device Mockup Viewport Chrome -->
+            <div id="mockup-viewport" class="mockup-viewport-frame desktop-frame">
+                <!-- Desktop Window Chrome Header -->
+                <div class="mockup-window-header" id="mockup-desktop-header">
+                    <div class="mockup-window-controls">
+                        <span class="window-dot dot-red"></span>
+                        <span class="window-dot dot-yellow"></span>
+                        <span class="window-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span id="mockup-address-url">https://project.local</span>
+                    </div>
+                    <div class="mockup-window-actions">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </div>
+
+                <!-- Mobile Smartphone Notch Header -->
+                <div class="mockup-mobile-header" id="mockup-mobile-header" style="display: none;">
+                    <span class="mobile-clock">09:41</span>
+                    <div class="mobile-notch-sensor"></div>
+                    <div class="mobile-status-icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Mockup Screen Body -->
+                <div class="mockup-screen-content">
+                    <img id="modal-project-img" class="modal-image-preview" src="" alt="Project Preview" style="display: none;">
+                </div>
+            </div>
+
             <div class="modal-body">
-                <h3 id="modal-project-title" class="modal-title"></h3>
+                <div class="modal-header-meta">
+                    <h3 id="modal-project-title" class="modal-title"></h3>
+                    <div class="modal-external-actions" id="modal-project-links"></div>
+                </div>
                 <p id="modal-project-desc" class="modal-text"></p>
                 <div id="modal-project-tags" class="project-showcase-tags"></div>
             </div>
@@ -432,6 +717,42 @@
         <div class="lightbox-dialog" onclick="event.stopPropagation()">
             <button type="button" class="modal-close-button" onclick="closeLightbox()" aria-label="Close image">&times;</button>
             <img id="lightbox-img" class="lightbox-img" src="" alt="Certificate Preview">
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         IN-APP QUICK VIEW PDF CV MODAL
+         ==================================================================== -->
+    <div id="cv-modal" class="modal-overlay cv-modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" onclick="closeCvModal()">
+        <div class="cv-modal-dialog" onclick="event.stopPropagation()">
+            <div class="cv-modal-header">
+                <div class="cv-modal-title-group">
+                    <div class="cv-badge-icon"><i class="fas fa-file-pdf"></i></div>
+                    <div>
+                        <h3 class="cv-modal-title">Curriculum Vitae</h3>
+                        <p class="cv-modal-subtitle"><%= data.info.nama %> &bull; In-App PDF Preview</p>
+                    </div>
+                </div>
+                <div class="cv-modal-actions">
+                    <a href="<%= data.info.cvUrl %>" target="_blank" rel="noopener noreferrer" class="btn-cv-header-action" title="Open in new tab">
+                        <i class="fas fa-external-link-alt"></i> <span class="action-label">Open Tab</span>
+                    </a>
+                    <a href="<%= data.info.cvUrl %>" download="<%= data.info.cvFilename %>" class="btn-cv-header-action btn-cv-download-accent" title="Download CV">
+                        <i class="fas fa-download"></i> <span class="action-label">Download</span>
+                    </a>
+                    <button type="button" class="modal-close-button cv-modal-close" onclick="closeCvModal()" aria-label="Close CV modal">&times;</button>
+                </div>
+            </div>
+            <div class="cv-modal-body">
+                <iframe id="cv-iframe" class="cv-iframe-element" src="" title="CV PDF Document"></iframe>
+                <div id="cv-fallback-msg" class="cv-fallback-container" style="display: none;">
+                    <i class="fas fa-file-pdf fallback-icon"></i>
+                    <p>Browser Anda tidak mendukung preview PDF langsung di dalam frame.</p>
+                    <a href="<%= data.info.cvUrl %>" download="<%= data.info.cvFilename %>" class="btn-pill-cta">
+                        <i class="fas fa-download"></i> Download Berkas CV (PDF)
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 

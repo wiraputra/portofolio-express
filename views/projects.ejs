@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>All Projects — <%= data.info.nama %></title>
+    <meta name="description" content="Explore full-stack platforms, web applications, and mobile projects engineered by <%= data.info.nama %>">
+    <meta name="author" content="<%= data.info.nama %>">
+
+    <!-- Fonts: Poppins & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap">
+    
+    <!-- Icons: Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/style.css?v=70">
+    <link rel="icon" href="/favicon.png" type="image/png">
+</head>
+<body class="projects-page-body">
+
+    <!-- Background Canvas for Ambient Theme -->
+    <div class="ambient-gradient-backdrop" aria-hidden="true"></div>
+
+    <!-- ====================================================================
+         FLOATING NAVBAR
+         ==================================================================== -->
+    <header class="navbar-wrapper">
+        <nav class="floating-navbar" aria-label="Projects Page Navigation">
+            <!-- Brand Logo -->
+            <a href="/" class="nav-logo" aria-label="Back to Portfolio Home">
+                <span class="logo-initials">GW</span>
+            </a>
+
+            <!-- Nav Links -->
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="/" class="nav-link"><i class="fas fa-arrow-left"></i> Portfolio</a></li>
+                <li><a href="/projects" class="nav-link active"><i class="fas fa-folder-open"></i> Projects</a></li>
+                <li><a href="/games" class="nav-link nav-link-games" title="Play Interactive Minigames"><i class="fas fa-gamepad"></i> Minigames</a></li>
+            </ul>
+
+            <!-- Right Actions: Theme Toggle + Get In Touch -->
+            <div class="nav-actions">
+                <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Light and Dark Theme" title="Toggle Light / Dark Mode">
+                    <i class="fas fa-sun icon-sun" aria-hidden="true"></i>
+                    <i class="fas fa-moon icon-moon" aria-hidden="true"></i>
+                </button>
+
+                <a href="mailto:<%= data.info.email %>" class="btn-pill-cta" id="nav-cta-btn">
+                    Get in Touch
+                </a>
+
+                <!-- Mobile Hamburger Toggle -->
+                <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Drawer Overlay -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay"></div>
+    <div id="mobile-menu-drawer" class="mobile-menu-drawer" role="dialog" aria-modal="true">
+        <div class="mobile-menu-header">
+            <span class="logo-initials">GW</span>
+            <button type="button" class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">&times;</button>
+        </div>
+        <ul class="mobile-menu-links">
+            <li><a href="/" class="mobile-link"><i class="fas fa-arrow-left"></i> Portfolio Home</a></li>
+            <li><a href="/projects" class="mobile-link active"><i class="fas fa-folder-open"></i> Projects</a></li>
+            <li><a href="/games" class="mobile-link"><i class="fas fa-gamepad"></i> Minigames</a></li>
+        </ul>
+        <div class="mobile-menu-footer">
+            <a href="mailto:<%= data.info.email %>" class="btn-pill-cta w-full text-center">Get in Touch</a>
+        </div>
+    </div>
+
+    <!-- MAIN PAGE CONTENT -->
+    <main class="main-content projects-page-main">
+        <section class="section-full projects-catalog-section">
+            <div class="section-container">
+                
+                <!-- Page Breadcrumb & Header -->
+                <div class="projects-page-header">
+                    <div class="projects-breadcrumb">
+                        <a href="/"><i class="fas fa-home"></i> Home</a>
+                        <span class="breadcrumb-separator">/</span>
+                        <span class="breadcrumb-current">Projects</span>
+                    </div>
+
+                    <div class="section-badge-pill">
+                        <i class="fas fa-laptop-code"></i> Engineering Portfolio
+                    </div>
+                    <h1 class="projects-page-title">All Projects &amp; Applications</h1>
+                    <p class="projects-page-subtitle">
+                        Comprehensive showcase of production web applications, enterprise systems, 3D visualizations, and mobile platforms.
+                    </p>
+                </div>
+
+                <!-- Dynamic Filter & Live Search Toolbar -->
+                <div class="projects-toolbar">
+                    <div class="projects-search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="project-search-input" placeholder="Search projects by name, technology, or description..." aria-label="Search Projects">
+                        <button type="button" id="project-search-clear" class="search-clear-btn" aria-label="Clear Search" style="display: none;">&times;</button>
+                    </div>
+
+                    <div class="projects-filter-pills" id="projects-filter-pills">
+                        <button type="button" class="project-filter-pill active" data-tag="all">All (<%= data.projects.length %>)</button>
+                        <button type="button" class="project-filter-pill" data-tag="React">React</button>
+                        <button type="button" class="project-filter-pill" data-tag="Laravel">Laravel</button>
+                        <button type="button" class="project-filter-pill" data-tag="TypeScript">TypeScript</button>
+                        <button type="button" class="project-filter-pill" data-tag="Next.js">Next.js</button>
+                        <button type="button" class="project-filter-pill" data-tag="Three.js">Three.js</button>
+                        <button type="button" class="project-filter-pill" data-tag="Flutter">Flutter</button>
+                        <button type="button" class="project-filter-pill" data-tag="Vue.js">Vue.js</button>
+                        <button type="button" class="project-filter-pill" data-tag="PHP">PHP</button>
+                    </div>
+                </div>
+
+                <!-- Projects Grid -->
+                <div class="projects-card-grid" id="projects-grid">
+                    <% data.projects.forEach(project => { %>
+                        <article 
+                            class="project-showcase-card <%= project.featured ? 'is-featured' : '' %> <%= project.img ? 'has-media' : '' %>"
+                            data-title="<%= project.judul.toLowerCase() %>"
+                            data-desc="<%= project.deskripsi.toLowerCase() %>"
+                            data-tags='<%= JSON.stringify(project.tags).toLowerCase() %>'
+                        >
+                            <% if (project.img) { %>
+                                <div class="project-card-media" onclick="openLightbox('<%= project.img %>')" role="button" tabindex="0" title="Click to view full image">
+                                    <img src="<%= project.img %>" alt="<%= project.judul %> Preview" class="project-card-img" loading="lazy">
+                                    <div class="project-media-overlay">
+                                        <span class="media-zoom-pill"><i class="fas fa-search-plus"></i> View Full Image</span>
+                                    </div>
+                                    <% if (project.featured) { %>
+                                        <div class="featured-ribbon-badge">
+                                            <i class="fas fa-star"></i> Featured Platform
+                                        </div>
+                                    <% } %>
+                                </div>
+                            <% } else if (project.featured) { %>
+                                <div class="featured-ribbon">
+                                    <i class="fas fa-star"></i> Featured Platform
+                                </div>
+                            <% } %>
+
+                            <div class="project-showcase-content">
+                                <h3 class="project-showcase-title"><%= project.judul %></h3>
+                                <p class="project-showcase-desc"><%= project.deskripsi %></p>
+
+                                <div class="project-showcase-tags">
+                                    <% project.tags.forEach(tag => { %>
+                                        <span class="tag-chip"><%= tag %></span>
+                                    <% }); %>
+                                </div>
+
+                                <div class="project-showcase-actions">
+                                    <% if (project.detailDesc) { %>
+                                        <button 
+                                            type="button" 
+                                            class="btn-text-link" 
+                                            data-judul="<%= project.judul %>"
+                                            data-desc="<%= project.detailDesc %>"
+                                            data-img="<%= project.detailImg || project.img || '' %>"
+                                            data-tags='<%= JSON.stringify(project.tags) %>'
+                                            data-demo="<%= project.demo || '' %>"
+                                            data-link="<%= project.link || '' %>"
+                                            onclick="openProjectModal(this)"
+                                        >
+                                            View Details <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                    <% } %>
+
+                                    <div class="project-links-group">
+                                        <% if (project.demo) { %>
+                                            <a href="<%= project.demo %>" target="_blank" rel="noopener noreferrer" class="btn-text-link demo-link">
+                                                <i class="fas fa-globe"></i> Live Project <i class="fas fa-external-link-alt"></i>
+                                            </a>
+                                        <% } %>
+
+                                        <% if (project.link) { %>
+                                            <a href="<%= project.link %>" target="_blank" rel="noopener noreferrer" class="btn-text-link repo-link">
+                                                <i class="fab fa-github"></i> Repository <i class="fas fa-external-link-alt"></i>
+                                            </a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    <% }); %>
+                </div>
+
+                <!-- Projects Empty State -->
+                <div id="projects-empty-state" class="projects-empty-state" style="display: none;">
+                    <div class="empty-icon"><i class="fas fa-filter-circle-xmark"></i></div>
+                    <h4 class="empty-title">No matching projects found</h4>
+                    <p class="empty-desc">Try clearing your search keyword or selecting a different technology filter.</p>
+                    <button type="button" class="btn-pill-cta" onclick="resetProjectFilters()">
+                        <i class="fas fa-rotate-left"></i> Reset Filters
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer-full">
+        <div class="footer-container">
+            <div class="footer-left">
+                <span class="footer-logo">GW.</span>
+                <p class="footer-copy">&copy; <%= new Date().getFullYear() %> <%= data.info.nama %>. All rights reserved.</p>
+            </div>
+            <div class="footer-links">
+                <a href="/" class="footer-nav-link">Portfolio Home</a>
+                <a href="<%= data.info.github %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">GitHub</a>
+                <a href="<%= data.info.linkedin %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">LinkedIn</a>
+                <a href="mailto:<%= data.info.email %>" class="footer-nav-link">Email</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL: PROJECT DETAIL WITH DEVICE MOCKUP FRAME SWITCHER -->
+    <div id="project-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-mockup">
+            <button type="button" class="modal-close-button" onclick="closeProjectModal()" aria-label="Close dialog">&times;</button>
+            
+            <!-- Device Frame Mockup Switcher Toolbar -->
+            <div class="mockup-switch-toolbar">
+                <span class="mockup-switch-label"><i class="fas fa-layer-group"></i> Preview Mode:</span>
+                <div class="mockup-switch-tabs">
+                    <button type="button" class="mockup-tab-btn active" id="mockup-tab-desktop" onclick="switchMockupDevice('desktop')">
+                        <i class="fas fa-laptop"></i> Desktop Frame
+                    </button>
+                    <button type="button" class="mockup-tab-btn" id="mockup-tab-mobile" onclick="switchMockupDevice('mobile')">
+                        <i class="fas fa-mobile-alt"></i> Mobile Frame
+                    </button>
+                </div>
+            </div>
+
+            <!-- Device Mockup Viewport Chrome -->
+            <div id="mockup-viewport" class="mockup-viewport-frame desktop-frame">
+                <!-- Desktop Window Chrome Header -->
+                <div class="mockup-window-header" id="mockup-desktop-header">
+                    <div class="mockup-window-controls">
+                        <span class="window-dot dot-red"></span>
+                        <span class="window-dot dot-yellow"></span>
+                        <span class="window-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span id="mockup-address-url">https://project.local</span>
+                    </div>
+                    <div class="mockup-window-actions">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </div>
+
+                <!-- Mobile Smartphone Notch Header -->
+                <div class="mockup-mobile-header" id="mockup-mobile-header" style="display: none;">
+                    <span class="mobile-clock">09:41</span>
+                    <div class="mobile-notch-sensor"></div>
+                    <div class="mobile-status-icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Mockup Screen Body -->
+                <div class="mockup-screen-content">
+                    <img id="modal-project-img" class="modal-image-preview" src="" alt="Project Preview" style="display: none;">
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-header-meta">
+                    <h3 id="modal-project-title" class="modal-title"></h3>
+                    <div class="modal-external-actions" id="modal-project-links"></div>
+                </div>
+                <p id="modal-project-desc" class="modal-text"></p>
+                <div id="modal-project-tags" class="project-showcase-tags"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: LIGHTBOX PREVIEW -->
+    <div id="lightbox-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" onclick="closeLightbox()">
+        <div class="lightbox-dialog" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close-button" onclick="closeLightbox()" aria-label="Close image">&times;</button>
+            <img id="lightbox-img" class="lightbox-img" src="" alt="Certificate Preview">
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" aria-live="polite">
+        <div id="app-toast" class="toast">
+            <i class="fas fa-check-circle"></i>
+            <span id="toast-message">Notification</span>
+        </div>
+    </div>
+
+    <!-- Data Injection for Client Script -->
+    <script id="portfolio-client-data" type="application/json">
+        <%- JSON.stringify({ roles: data.info.role, email: data.info.email }) %>
+    </script>
+
+    <!-- Client Script -->
+    <script src="/script.js?v=70"></script>
+</body>
+</html>

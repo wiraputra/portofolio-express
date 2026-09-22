@@ -48,14 +48,14 @@ const portfolioContext = {
             {
                 title: "Full Stack Developer (Magang Berdampak)",
                 place: "Interlace Studies Bali",
-                date: "2026 - Present",
+                date: "March 2026 - September 2026",
                 desc: "Developing the 'Genuine Solution' platform, an application that connects employers and job seekers, featuring an admin panel to mediate and facilitate the process between both parties."
             },
             {
-                title: "Frontend Developer",
+                title: "Frontend Developer (Project Based Learning)",
                 place: "Interlace Studies Bali",
-                date: "2025 - 2026",
-                desc: "Building fast interfaces for web applications using React and modern component-driven architectures."
+                date: "August 2025 - February 2026",
+                desc: "Developing an Enterprise Resource Planning (ERP) project using React and Node.js, building fast, modular interfaces and modern component-driven architectures."
             }
         ],
         education: [
@@ -78,6 +78,9 @@ const portfolioContext = {
             id: "cert7",
             title: "Magang Berdampak MBKM — Interlace Studies",
             issuer: "PT. Jalinan Studi Internusa",
+            category: "Web & Fullstack",
+            categoryIcon: "fas fa-laptop-code",
+            tags: ["MBKM Magang", "ERP Development", "2026"],
             img: "/images/cert7.png",
             desc: "Telah berhasil menyelesaikan Program Merdeka Belajar Kampus Merdeka (MBKM) di Interlace Studies Bali yang dikelola oleh PT. Jalinan Studi Internusa, berlangsung pada 5 Maret – 31 Juli 2026. Nomor: 07/MBKM/JSI/VII/2026.",
             link: "#"
@@ -86,6 +89,9 @@ const portfolioContext = {
             id: "cert6",
             title: "Minicredentials Information System Security",
             issuer: "Sawah Cyber Security",
+            category: "Cyber Security",
+            categoryIcon: "fas fa-shield-alt",
+            tags: ["Cyber Kill Chain", "OWASP Top 10", "PenTest"],
             img: "/images/cert6.jpg",
             desc: "Has demonstrated fundamental competency in ethical hacking principles by applying the Cyber Kill Chain framework, identifying OWASP Top 10 vulnerabilities, and utilizing industry standard penetration testing tools during a hands-on penetration testing project.",
             link: "https://academy.sawahcyber.id/credentials/scs-coc-mciss-0210-2026-kb24vr"
@@ -94,6 +100,9 @@ const portfolioContext = {
             id: "cert5",
             title: "MiniCredential Information System Security",
             issuer: "Sawah Cyber Security",
+            category: "Cyber Security",
+            categoryIcon: "fas fa-flag",
+            tags: ["Capture The Flag", "Hands-on CTF", "Defense"],
             img: "/images/cert5.jpg",
             desc: "Participated in comprehensive presentation sessions and hands-on Capture The Flag (CTF) practical exercises in information system security.",
             link: "https://academy.sawahcyber.id/credentials/scs-cop-mciss-0210-2026-kaxhur"
@@ -102,6 +111,9 @@ const portfolioContext = {
             id: "cert1",
             title: "Masterclass Ethical Hacking",
             issuer: "Sawah Cyber Security",
+            category: "Cyber Security",
+            categoryIcon: "fas fa-user-secret",
+            tags: ["Ethical Hacking", "Reconnaissance", "Hardening"],
             img: "/images/cert1.jpg", 
             desc: "Completed an intensive Ethical Hacking Masterclass certification covering network reconnaissance, vulnerability analysis, and security hardening.",
             link: "https://www.linkedin.com/in/i-gede-wirawan-849651172/details/certifications/1751696849497/single-media-viewer/?profileId=ACoAACkHyHkBVcXhh8p5HfYxunAjSHHRXG9fH9g"
@@ -110,6 +122,9 @@ const portfolioContext = {
             id: "cert2",
             title: "React.js : Beginner to Advanced",
             issuer: "Udemy - Programmer Zaman Now",
+            category: "Web & Fullstack",
+            categoryIcon: "fab fa-react",
+            tags: ["React.js", "Hooks & State", "Clean Architecture"],
             img: "/images/cert2.jpg",
             desc: "Comprehensive React training including hooks, state management, routing, performance optimization, and clean component architecture.",
             link: "https://www.linkedin.com/in/i-gede-wirawan-849651172/details/certifications/1759843624784/single-media-viewer/?profileId=ACoAACkHyHkBVcXhh8p5HfYxunAjSHHRXG9fH9g"
@@ -118,6 +133,9 @@ const portfolioContext = {
             id: "cert3",
             title: "Junior Web Developer Certification",
             issuer: "Digitalent - Ministry of Communication and Information Technology",
+            category: "Web & Fullstack",
+            categoryIcon: "fas fa-code",
+            tags: ["Kominfo", "Junior Web Dev", "BNSP Standards"],
             img: "/images/cert3.jpg",
             desc: "Complete Junior Web Developer national certification with competency standards in responsive web design, backend programming, and databases.",
             link: "https://www.linkedin.com/in/i-gede-wirawan-849651172/details/certifications/1755056900288/single-media-viewer/?profileId=ACoAACkHyHkBVcXhh8p5HfYxunAjSHHRXG9fH9g"
@@ -126,6 +144,9 @@ const portfolioContext = {
             id: "cert4",
             title: "Code Generation and Optimization using IBM Granite",
             issuer: "IBM",
+            category: "AI & Cloud",
+            categoryIcon: "fas fa-brain",
+            tags: ["IBM Granite", "Prompt Engineering", "GenAI"],
             img: "/images/cert4.jpg",
             desc: "Trained on prompt engineering, generative AI code assistance, and software optimization utilizing IBM Granite foundational models.",
             link: "https://www.credly.com/badges/8209c5f4-8bbe-4622-bf4e-c839eb96da26/linked_in_profile"
