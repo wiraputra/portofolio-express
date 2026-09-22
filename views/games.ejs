@@ -340,23 +340,9 @@
     </main>
 
     <!-- ====================================================================
-         FOOTER
+         FOOTER (COMPONENT)
          ==================================================================== -->
-    <footer class="footer-full">
-        <div class="footer-container">
-            <div class="footer-left">
-                <span class="footer-logo">GW.</span>
-                <p class="footer-copy">&copy; <%= new Date().getFullYear() %> <%= data.info.nama %>. All rights reserved.</p>
-            </div>
-            <div class="footer-links">
-                <a href="/" class="footer-nav-link">Home Portfolio</a>
-                <a href="<%= data.info.github %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">GitHub</a>
-                <a href="<%= data.info.linkedin %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">LinkedIn</a>
-                <a href="mailto:<%= data.info.email %>" class="footer-nav-link">Email</a>
-                <a href="#games-catalog" class="footer-nav-link" id="btn-back-to-top">Back to Top &uarr;</a>
-            </div>
-        </div>
-    </footer>
+    <%- include('partials/footer') %>
 
     <!-- Three.js CDN for 3D Particle Blaster -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>

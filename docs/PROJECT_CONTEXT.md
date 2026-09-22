@@ -33,7 +33,11 @@ portofolio-express/
 │   ├── script.js            # Interaksi client-side (Three.js, theme toggle, drawer, modal)
 │   └── style.css            # Sistem styling full-width, mint pastel, dan dual theme
 ├── views/
+│   ├── partials/
+│   │   └── footer.ejs       # Komponen footer modern, modular & pre-footer CTA
 │   ├── home.ejs             # Template landing page utama (Full-Width, 2-Column Hero)
+│   ├── projects.ejs         # Halaman katalog seluruh proyek dengan modal device frame
+│   ├── games.ejs            # Halaman arcade minigames interaktif
 │   └── 404.ejs              # Halaman 404 Not Found
 ├── package.json             # Dependensi dan npm scripts
 ├── server.js                # Local development server runner (port 3000)

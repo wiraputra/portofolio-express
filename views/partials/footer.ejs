@@ -1,0 +1,163 @@
+<!-- ====================================================================
+     MODERN COMPONENT FOOTER & PRE-FOOTER CTA
+     ==================================================================== -->
+<footer class="footer-site" id="site-footer">
+    <!-- Top Subtle Ambient Light Glow -->
+    <div class="footer-ambient-glow" aria-hidden="true"></div>
+
+    <div class="footer-main-container">
+        <!-- 1. Pre-Footer Interactive CTA Card -->
+        <div class="footer-cta-card">
+            <div class="footer-cta-content">
+                <div class="footer-cta-badge">
+                    <span class="cta-pulse-dot"></span>
+                    <span>Ready for Collaboration</span>
+                </div>
+                <h2 class="footer-cta-title">Let's build something exceptional together.</h2>
+                <p class="footer-cta-subtitle">
+                    Whether you have an upcoming project, need technical support &amp; web operations, or simply want to chat about code and security — my inbox is always open.
+                </p>
+            </div>
+            <div class="footer-cta-actions">
+                <a href="mailto:<%= data.info.email %>" class="btn-footer-cta btn-footer-primary">
+                    <i class="fas fa-paper-plane"></i> <span>Send an Email</span>
+                </a>
+                <button type="button" class="btn-footer-cta btn-footer-secondary" id="btn-footer-copy-email" onclick="copyFooterEmail('<%= data.info.email %>')">
+                    <i class="fas fa-copy"></i> <span id="footer-copy-text">Copy Email</span>
+                </button>
+                <a href="<%= data.info.linkedin %>" target="_blank" rel="noopener noreferrer" class="btn-footer-cta btn-footer-outline">
+                    <i class="fab fa-linkedin-in"></i> <span>LinkedIn</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 2. Main Footer Grid -->
+        <div class="footer-grid">
+            <!-- Brand & Identity Column -->
+            <div class="footer-col footer-col-brand">
+                <a href="/" class="footer-brand-header">
+                    <span class="footer-logo-badge">GW</span>
+                    <span class="footer-brand-text"><%= data.info.nama %></span>
+                </a>
+                <p class="footer-brand-desc">
+                    Full-Stack Developer &amp; Technical Support Engineer specializing in modern component-driven frontends, scalable web systems, and cybersecurity principles.
+                </p>
+                <div class="footer-live-status">
+                    <span class="status-indicator-dot"></span>
+                    <span class="status-indicator-text">Active &bull; Technical Support &amp; WebOps</span>
+                </div>
+                <div class="footer-location-pill">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span><%= data.info.lokasi %> &bull; WITA (UTC+8)</span>
+                </div>
+            </div>
+
+            <!-- Navigation Column -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Navigation</h4>
+                <ul class="footer-nav-list">
+                    <li><a href="/#home" class="footer-link"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="/#skills" class="footer-link"><i class="fas fa-chevron-right"></i> Tech Stack &amp; Skills</a></li>
+                    <li><a href="/#projects" class="footer-link"><i class="fas fa-chevron-right"></i> Featured Projects</a></li>
+                    <li><a href="/#github-activity" class="footer-link"><i class="fas fa-chevron-right"></i> Live GitHub Activity</a></li>
+                    <li><a href="/#experience" class="footer-link"><i class="fas fa-chevron-right"></i> Experience &amp; Education</a></li>
+                    <li><a href="/#certificates" class="footer-link"><i class="fas fa-chevron-right"></i> Certifications</a></li>
+                </ul>
+            </div>
+
+            <!-- Highlights & Catalog Column -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Highlights</h4>
+                <ul class="footer-nav-list">
+                    <li><a href="/#projects" class="footer-link"><i class="fas fa-chevron-right"></i> Genuine Solutions ATS</a></li>
+                    <li><a href="/projects" class="footer-link"><i class="fas fa-chevron-right"></i> Full Projects Catalog</a></li>
+                    <li><a href="/games" class="footer-link"><i class="fas fa-gamepad"></i> Interactive Arcade</a></li>
+                    <% if (data.info.cvUrl) { %>
+                    <li>
+                        <a href="<%= data.info.cvUrl %>" target="_blank" rel="noopener noreferrer" class="footer-link">
+                            <i class="fas fa-file-pdf"></i> Download Resume (CV)
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+
+            <!-- Connect & Socials Column -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Connect</h4>
+                <p class="footer-connect-text">Feel free to follow my work and reach out across professional networks:</p>
+                <div class="footer-social-cluster">
+                    <a href="<%= data.info.github %>" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="GitHub Profile" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="<%= data.info.linkedin %>" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="LinkedIn Profile" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="mailto:<%= data.info.email %>" class="footer-social-btn" aria-label="Direct Email" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+                <div class="footer-quick-email-card">
+                    <span class="quick-email-label">Direct Inquiries:</span>
+                    <a href="mailto:<%= data.info.email %>" class="quick-email-val"><%= data.info.email %></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Bottom Bar: Copyright, Tech Stack, Back to Top -->
+        <div class="footer-bottom-bar">
+            <div class="footer-bottom-left">
+                <p class="footer-copyright">
+                    &copy; <%= new Date().getFullYear() %> <strong><%= data.info.nama %></strong>. All rights reserved.
+                </p>
+                <p class="footer-tech-stack">
+                    Engineered with Node.js, Express, EJS &amp; Vanilla CSS. Built for performance &amp; high visual fidelity.
+                </p>
+            </div>
+            <div class="footer-bottom-right">
+                <button type="button" class="btn-footer-back-to-top" id="footer-btn-back-to-top" onclick="scrollFooterToTop()" aria-label="Back to Top">
+                    <span>Back to Top</span>
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function scrollFooterToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function copyFooterEmail(email) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(email).then(() => {
+                notifyCopied();
+            }).catch(() => fallbackCopy(email));
+        } else {
+            fallbackCopy(email);
+        }
+
+        function fallbackCopy(text) {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            notifyCopied();
+        }
+
+        function notifyCopied() {
+            const btnText = document.getElementById('footer-copy-text');
+            if (btnText) {
+                const prev = btnText.textContent;
+                btnText.textContent = 'Copied!';
+                setTimeout(() => { btnText.textContent = prev; }, 2000);
+            }
+            if (window.showToast) {
+                window.showToast('Email address copied to clipboard!');
+            }
+        }
+    }
+</script>

@@ -212,20 +212,7 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="footer-full">
-        <div class="footer-container">
-            <div class="footer-left">
-                <span class="footer-logo">GW.</span>
-                <p class="footer-copy">&copy; <%= new Date().getFullYear() %> <%= data.info.nama %>. All rights reserved.</p>
-            </div>
-            <div class="footer-links">
-                <a href="/" class="footer-nav-link">Portfolio Home</a>
-                <a href="<%= data.info.github %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">GitHub</a>
-                <a href="<%= data.info.linkedin %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">LinkedIn</a>
-                <a href="mailto:<%= data.info.email %>" class="footer-nav-link">Email</a>
-            </div>
-        </div>
-    </footer>
+    <%- include('partials/footer') %>
 
     <!-- MODAL: PROJECT DETAIL WITH DEVICE MOCKUP FRAME SWITCHER -->
     <div id="project-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">

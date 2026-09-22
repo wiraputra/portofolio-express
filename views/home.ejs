@@ -258,7 +258,7 @@
                             <div class="category-skills-tags">
                                 <% cat.skills.forEach(skill => { %>
                                     <div class="skill-tag-item" title="<%= skill.nama %> (<%= skill.category %>)">
-                                        <i class="<%= skill.icon %> skill-tag-icon" style="color: <%= skill.color %>;"></i>
+                                        <i class="<%= skill.icon %> skill-tag-icon" <%- skill.color ? `style="color: ${skill.color};"` : '' %>></i>
                                         <span class="skill-tag-name"><%= skill.nama %></span>
                                     </div>
                                 <% }); %>
@@ -630,22 +630,9 @@
     </main>
 
     <!-- ====================================================================
-         FOOTER (FULL-WIDTH)
+         FOOTER (COMPONENT)
          ==================================================================== -->
-    <footer class="footer-full">
-        <div class="footer-container">
-            <div class="footer-left">
-                <span class="footer-logo">GW.</span>
-                <p class="footer-copy">&copy; <%= new Date().getFullYear() %> <%= data.info.nama %>. All rights reserved.</p>
-            </div>
-            <div class="footer-links">
-                <a href="<%= data.info.github %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">GitHub</a>
-                <a href="<%= data.info.linkedin %>" target="_blank" rel="noopener noreferrer" class="footer-nav-link">LinkedIn</a>
-                <a href="mailto:<%= data.info.email %>" class="footer-nav-link">Email</a>
-                <a href="#home" class="footer-nav-link" id="btn-back-to-top">Back to Top &uarr;</a>
-            </div>
-        </div>
-    </footer>
+    <%- include('partials/footer') %>
 
     <!-- ====================================================================
          MODALS (PROJECT DETAIL & LIGHTBOX)
