@@ -46,10 +46,16 @@ const portfolioContext = {
     resume: {
         experience: [
             {
+                title: "Technical Support Engineer (Internship)",
+                place: "Interlace Studies",
+                date: "September 2026 - Present",
+                desc: "Managing and maintaining client web applications including Interlace Studies Australia, setting up new project environments and boilerplates, troubleshooting technical issues, and ensuring smooth post-deployment operations."
+            },
+            {
                 title: "Full Stack Developer (Magang Berdampak)",
                 place: "Interlace Studies Bali",
-                date: "March 2026 - September 2026",
-                desc: "Developing the 'Genuine Solution' platform, an application that connects employers and job seekers, featuring an admin panel to mediate and facilitate the process between both parties."
+                date: "March 2026 - August 2026",
+                desc: "Developing the 'Genuine Solutions' platform, an application that connects employers and job seekers, featuring an admin panel to mediate and facilitate the process between both parties."
             },
             {
                 title: "Frontend Developer (Project Based Learning)",
